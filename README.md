@@ -1,1 +1,2 @@
-# IntrotoPrograming-tri1-2025
+# Benjamin Aigbogun
+I existas a human being. i like hollow knight and hollow knight silksong. i dont know much coding. math is good.
