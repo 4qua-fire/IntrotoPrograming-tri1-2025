@@ -34,7 +34,7 @@ lowercase = False
 UPPERCASE = False
 UpperCamelCase = False       #All lowercase, no spaces, capital for new words
 lowerCamelCase = False       #All lowercase, no spaces, capital for new words
-Snake_case = True            #All lowercase, underscore for spaces
+snake_case = True            #All lowercase, underscore for spaces
 SCREAMING_SNAKE_CASE =False
 
 #Other general rules to naming things
