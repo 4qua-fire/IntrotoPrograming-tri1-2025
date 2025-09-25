@@ -39,3 +39,20 @@ SCREAMING_SNAKE_CASE =False
 
 #Other general rules to naming things
 #1. Concise (short and discriptive)
+
+#imput
+#input("what is your name? ")
+#print("complete")
+
+name = (input("What is your name?\n>"))
+print("your name is " + name)
+print("cat"*10)
+
+#get number as string
+num = input("number to be squared?\n >")
+
+#convert (parse) the string into an int (cast)
+num = float(num)
+
+#do math and print
+print(num*num)
