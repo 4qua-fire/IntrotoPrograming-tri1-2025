@@ -1,5 +1,5 @@
 #arithmetic aperators
-5+3  #additionn            =8
+5+3  #additionn            =8 
 5-3  #subtracton           =2
 5/3  #division             ~1.67
 7//3 #division round down  ~2.34=2
@@ -21,7 +21,7 @@ print('"I am '+str(connect_age)+'"')
 print(f"Name: {connect_first_name} {connect_last_name}, Age: {connect_age}")
 #it seem you add f to the beginning surround the variables/other data tpes in {} 
 
-#animal survey assignment practice
+#Improper animal survey assignment practice
 animal = "dog"
 animal_reason = "they are cute"
 animal_amount = "over 340 breeds"
