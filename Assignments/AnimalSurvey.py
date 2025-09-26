@@ -1,4 +1,4 @@
-input("Hello!\nwelcom to my survey\n[TYPE ANY KEY TO CONTINUE]\n")
+input("Hello!\nwelcome to my survey\n[TYPE ANY KEY TO CONTINUE]\n")
 
 fav_animal =input("1. What is your favorite animal?\n>")
 reason =input("2. why are they your favorite?\n>")
