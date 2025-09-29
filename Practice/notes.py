@@ -1,0 +1,1 @@
+print("cat"*1000000000) #write cat a lot
