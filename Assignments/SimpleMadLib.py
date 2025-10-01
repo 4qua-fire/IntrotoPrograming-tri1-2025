@@ -38,3 +38,6 @@ adverb = input("adverb:")
 
 #finished madlib
 print(f"long long ago in the lands of {place1} there lived a {being}.\nthis {being} despised {noun1} for {noun1} liked {adverb} {verb} with its {noun2}.\nthe {noun2} was {being}'s most {adjective2} thing in its collection.\nwithout {noun2} {being} would get more {adjective3} that {adjective1}.\nwhen that happens {place1} will merge with {place2} and become the most {adjective4} {propper_noun} of them all\n{verbing} the {noun3} once and for all.")
+
+def mad_lib(place1,place2,being, adjective2, adjective3, adjective4,noun1, noun2, noun3, propper_noun, verb, verbing, adverb):
+    print(f"long long ago in the lands of {place1} there lived a {being}.\nthis {being} despised {noun1} for {noun1} liked {adverb} {verb} with its {noun2}.\nthe {noun2} was {being}'s most {adjective2} thing in its collection.\nwithout {noun2} {being} would get more {adjective3} that {adjective1}.\nwhen that happens {place1} will merge with {place2} and become the most {adjective4} {propper_noun} of them all\n{verbing} the {noun3} once and for all.")
