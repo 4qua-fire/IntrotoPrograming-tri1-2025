@@ -1,4 +1,4 @@
-mode = "simple calculator" #make sure mode is set to the function that will be run
+mode = "addition" #make sure mode is set to the function that will be run
 print("current mode: " + mode)
 if mode == "simple calculator":
     print("Calculator by benjamin\n\noperations:\naddition   subtraction   multiplication   division\nfloor division   exponentiation   modulus")
@@ -40,4 +40,4 @@ def simple_calculator():
         print(mod())
 
 #run a function here
-simple_calculator() #make sure mode is set to the function that will be run
+simple_calculator()#make sure mode is set to the function that will be run
