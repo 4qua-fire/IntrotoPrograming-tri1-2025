@@ -1,5 +1,5 @@
 def calculate_tax(item,price,rate):
-    print(f"the amount of tax to be collected on a {price} dollar {item} is {price*rate} dollars.")
+   return(price*rate)
 
 calculate_tax("dog",10.0,0.0685)
 
