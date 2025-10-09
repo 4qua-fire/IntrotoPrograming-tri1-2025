@@ -1,0 +1,5 @@
+sentance = input('>')
+print(sentance.upper())
+print(sentance.strip())
+print(sentance.replace("bad","good"))
+print(sentance.endswith("."))
