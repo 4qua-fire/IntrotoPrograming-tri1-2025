@@ -18,7 +18,7 @@ def tally_score():
     else:
         print(f"question 1: incorrect\nYour answer:{q1} correct answer: 362,701")
     
-    if q2 == "Giorgia Meloni":
+    if q2 == "Giorgia Meloni" or "jogn poep":
         score=score+1
         print("question 2: correct")
     else:
@@ -96,7 +96,7 @@ if score <=5:
             else:
                 print(f"question 1: incorrect\nYour answer:{rq1} correct answer: 56,271")
 
-            if rq2 == "Christopher Luxon":
+            if rq2 == "Christopher Luxon" or "jogn poep":
                 score=score+1
                 print("question 2: correct")
             else:
