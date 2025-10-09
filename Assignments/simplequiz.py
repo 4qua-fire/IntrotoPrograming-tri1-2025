@@ -1,5 +1,6 @@
 print("Welcome to the best quiz ever!")
 score=0
+#questions
 q1=input("Question 1:\nwhat is the population of New Orleans as of october 8th 2025?\n>")
 q2=input("Question 2:\nWho is the prime minister of Italy?\n>")
 q3=input("Question 3:\nWhat is the derivitive of 3x^2+3x-2?\n>")
@@ -10,6 +11,7 @@ q7=input('Question 7:\nwhat is the third word of "I See A Dreamer" by CG5? \n>')
 q8=input("Question 8:\nHow old was George Boole when he died?\n>")
 q9=input("Question 9:\nWhat is 1287523 in binary?\n>")
 q10=input("Question 10:\nWhat is the 3141th digit of pi?\n>")
+
 def tally_score():
     global score
     if q1 == "362,701":
@@ -71,13 +73,17 @@ def tally_score():
         print("question 10: correct")
     else:
         print(f"question 10: incorrect\nYour answer:{q10} correct answer: 4")
+
 tally_score()
 print(f"\nFinal score: {score}")
+
+#retake
 if score <=5:
     print("you absolute trash bozo\nYou absolute failure\nyou couldn't even pass\n")
     retake = input('A retake exam is available for losers\ntype "yes" or "no" to continue\n>')
     if retake == "yes":
         score=0
+        #retake questions
         rq1=input("Question 1:\nWhat is the population of olympia?\n>")
         rq2=input("Question 2:\nWho is the prime minister of New Zealand?\n>")
         rq3=input("Question 3:\nWhat is the derivite of 19x^2-14x+12?\n>")
@@ -88,6 +94,8 @@ if score <=5:
         rq8=input("Question 8:\nHow old was christopher columbus when he died\n>")
         rq9=input("Question 9:\nWhat is 924586 in binary?\n>")
         rq10=input("Question 10:\nWhat is the 1618th digit of phi?\n>")
+       
+       #retake tally score
         def retally_score():
             global score
             if rq1 == "56,271":
@@ -151,9 +159,9 @@ if score <=5:
                 print(f"question 10: incorrect\nYour answer:{rq10} correct answer: 2")
 
             print(f"\nFinal score: {score}")
+        
         retally_score()    
         if score >6:
             print("Wow\nso cool\nyou managed to pass the retake")
         else:
             print("im dissapointed you couldnt even pass the retake")   
-
