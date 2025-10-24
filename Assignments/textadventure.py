@@ -1,10 +1,8 @@
+#imports
+import sys
 #path 1 variables
 var_loop_count =0
 chase_monster = False
-death_cause = ""
-death_text= ""
-
-
 
 #repeated functions
 def dashes():   
@@ -33,7 +31,7 @@ def event_start():
     elif exit == "2":
         event_leave()
     elif exit == "wake up":      #secret option
-        print("awake_death()")
+            death_ending("Waking up", "You shouldn't slam your head into rocks\nThat won't help you escape")
     else:
         error()
         event_start()
@@ -41,21 +39,34 @@ def event_start():
 #path 1 functions
 def event_leave():
     dashes()
-    print("You leave the cave\nYou see that you are in a clearing in a forest")
+    print("You left the cave\nYou now see that you are in a clearing in a forest")
     clearing = input("Current options:\n1. return to the cave\n2. continue into the trees\n3. investigate the trees\n>")
     if clearing ==  "1":
         event_start()
     elif clearing == "2":
         event_strait_path()
     elif clearing == "3":
-        print("investigate_trees()")
+        text_investigate_trees()
     else:
         error()
         event_leave()
 
+def text_investigate_trees():
+    half_dash()
+    half_dash()
+    print("There is somthing off about the trees\nAll of the trees are the exact same\nNot just the trees but the scenery behind them too")
+    clearing = input("Current options:\n1. return to the cave\n2. continue into the trees\n>")
+    if clearing ==  "1":
+        event_start()
+    elif clearing == "2":
+        event_strait_path()
+    else:
+        error()
+        text_investigate_trees()
+
 def event_strait_path():
     dashes()
-    print("Ahead of you the path seems to continue endlessly\nThe trees mirror eachother on both sides\nYou hear the sound of Trees break behind you")
+    print("Ahead of you the path seems to continue endlessly\nThe trees mirror eachother on both sides\nYou hear the sound of trees break behind you")
     path = input("Current options:\n1. Continue onward\n2. turn around\n3. leave path\n>")
     if path == "1":
         event_loop()
@@ -69,7 +80,7 @@ def event_strait_path():
 
 def text_strait_turnaround():
     half_dash()
-    print("turning, around you see that the trees behind you have all fallen down\nyou have no way back")
+    print("Turning, around you see that the trees behind you have all fallen down\nYou have no way back")
     if input("1. turn around\n>") == "1":
         event_strait_path()
     else:
@@ -99,7 +110,7 @@ def event_moon():
     moon_path = input("Current options:\n1. take the left path\n2. take the right path\n>")
     if moon_path == "1":
         dashes()
-        print("RETURN ACTIVATED")
+        print("RESPAWN ACTIVATED")
         print(" - "*17)
         event_chase()
     if moon_path == "2":
@@ -167,22 +178,14 @@ def event_chase():
    
 def event_chase_run():
     if var_loop_count > 15:
-        while True:
-            half_dash()
-            print("You tried to run away\nHowever all the walking you did earlier tired you out\nDarkness clouds your mind\n")
-            replay = input("choose an option to continue\n1. restart story\n>")
-            if replay == "1":
-                print("\n"*10)
-                event_start()
-            else:
-                error()
+        death_ending("exaustion", "maybe dont walk so much before needing to run from a monster") 
     else:
         dashes()
         print("you run away from the monster\n after some running you approch an intersection")
         runaway_path = input("Current options\n1. Run to the left\n2. Run to the right\n>")
         if runaway_path == "1":
             event_chill()
-        if runaway_path == "2":
+        elif runaway_path == "2":
             half_dash()
             print("you ran to the right forgetting that that was the route you came from\nYou reach the strait path and continue to run\nThe moment you start to slow it seems the monster is immediatly behind you\nEvery thing fades to black")
             while True:
@@ -201,16 +204,16 @@ def event_chill():
     dashes()
     if chase_monster:
         print("the danger has passed\nBehind you the monster continues running down the other path\nIts shreiks gradually fading behind you")
+        half_dash()
+    print("It is getting cold now\nA mist forms with each breath")
+    chill_action = input("Current options:\n1. Continue onward\n2. attempt to find warmth\n>")
+    if chill_action == "1":
+        ending_forest_1()
+    elif chill_action == "2":
+        event_warmth()
     else:
-        print("It is getting cold now\nA mist forms with each breath")
-        chill_action = input("Current options:\n1. Continue onward\n2. attempt to find warmth\n>")
-        if chill_action == "1":
-            ending_forest_1()
-        elif chill_action == "2":
-            event_warmth()
-        else:
-            error()
-            event_chill()
+        error()
+        event_chill()
 
 def event_warmth():
     dashes()
@@ -302,7 +305,7 @@ def ending_forest_3():
             ending()
 
     ending_dash()
-    print("I See:                                             ")
+    print("this is the end then                               ")
     print("                  you slam you head into a rock    ")
     print("maybe that will stop this                          ")
     print("   maybe this nightmare will end.                 \n")
@@ -313,7 +316,7 @@ def ending_forest_3():
     ending()
 
 def ending():
-    pause = input("Enter to continue")
+    pause = input("Enter to continue\n>")
     dashes()
     print("YOU WIN (kinda)\nthanks for playing\n")
     restart = input("Play Again?\n1. yes\n2. no\n>")
@@ -322,7 +325,6 @@ def ending():
         event_start()
     else:
         print("i'll take that as a no")
-        import sys
         sys.exit("see you later")
 
 def death_ending(cause,text):
@@ -333,18 +335,24 @@ def death_ending(cause,text):
     print(text)
     print("***************************************************")
     print("\n"*5)
-    pause = input("Enter to continue")
+    pause = input("Enter to continue\n>")
     dashes()
     while True:
-        if input("Type 1 to continue\n") == "1":
+        restart = input("Type 1 to restart\n>")
+        if restart == "1":
             print("\n"*20)
             event_start()
+        if restart == "2":
+            sys.exit("see you later")
         else:
             half_dash()
-            print("That is not 1")
+            print("Rather than not typing 1\nyou can type 2 to end game")
     death_ending(death_cause, death_text)
-    
 
+event_moon()
+'''
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+'''
 
-
-event_start()
