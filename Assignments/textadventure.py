@@ -1,6 +1,9 @@
 #path 1 variables
 var_loop_count =0
 chase_monster = False
+death_cause = ""
+death_text= ""
+
 
 
 #repeated functions
@@ -321,6 +324,27 @@ def ending():
         print("i'll take that as a no")
         import sys
         sys.exit("see you later")
+
+def death_ending(cause,text):
+    ending_dash()
+    print(f"You died")
+    print(f"cause of death:")
+    print(cause)
+    print(text)
+    print("***************************************************")
+    print("\n"*5)
+    pause = input("Enter to continue")
+    dashes()
+    while True:
+        if input("Type 1 to continue\n") == "1":
+            print("\n"*20)
+            event_start()
+        else:
+            half_dash()
+            print("That is not 1")
+    death_ending(death_cause, death_text)
+    
+
 
 
 event_start()
