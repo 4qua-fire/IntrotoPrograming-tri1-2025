@@ -1,9 +1,10 @@
 #imports
 import sys
-#path 1 variables
+import random
+#variables
 var_loop_count =0
 chase_monster = False
-
+small_unlocked = False
 #repeated functions
 def dashes():   
     print("\n"+"-"*51)
@@ -17,24 +18,55 @@ def ending_dash():
     print("***************************************************\n")
 
 #start functions
-def event_start():
-    global var_loop_count
-    global chase_monster
-    var_loop_count =0
-    chase_monster = False
+def event_cave():
+    global var_loop_count, chase_monster, small_unlocked
     dashes()
-    print("You are in a cave\nYou dont know where you are\n")
-    exit = input("Current options:\n1. Stay in the cave\n2. Leave the cave\n>")
-    
-    if exit == "1":
-        print("event_stay()")
-    elif exit == "2":
+    if small_unlocked == True:
+        print("You are back in the main room of the cave\n")
+        exit = input("Current options:\n1. Look around the main room\n2. Look around the small room\n3. Leave the cave\n>")
+
+        if exit == "1":
+            text_cave_lookaround()
+        elif exit == "2":
+            event_small_room_investigate()
+        elif exit == "3":
+            event_leave()
+        else:
+            error()
+            event_cave()
+    else:
+        var_loop_count =0
+        chase_monster = False
+        small_unlocked = False
+        print("You are in a cave\nYou dont know where you are\n")
+        exit = input("Current options:\n1. Stay in the cave\n2. Leave the cave\n>")
+
+        if exit == "1":
+            event_stay()
+        elif exit == "2":
+            event_leave()
+        elif exit == "wake up":      #secret option
+                death_ending("Waking up", "You shouldn't slam your head into rocks\nThat won't help you escape")
+        else:
+            error()
+            event_cave()
+
+def event_stay():
+    dashes()
+    print("You decided you will stay in the cave")
+    stay = input("Current options:\n1. Look around the cave\n2. Leave the cave\n>")
+    if stay == "1":
+        event_cave_lookaround()
+    elif stay == "2":
         event_leave()
-    elif exit == "wake up":      #secret option
-            death_ending("Waking up", "You shouldn't slam your head into rocks\nThat won't help you escape")
     else:
         error()
-        event_start()
+        event_stay()
+
+
+
+
+
 
 #path 1 functions
 def event_leave():
@@ -42,7 +74,7 @@ def event_leave():
     print("You left the cave\nYou now see that you are in a clearing in a forest")
     clearing = input("Current options:\n1. return to the cave\n2. continue into the trees\n3. investigate the trees\n>")
     if clearing ==  "1":
-        event_start()
+        event_cave()
     elif clearing == "2":
         event_strait_path()
     elif clearing == "3":
@@ -57,7 +89,7 @@ def text_investigate_trees():
     print("There is somthing off about the trees\nAll of the trees are the exact same\nNot just the trees but the scenery behind them too")
     clearing = input("Current options:\n1. return to the cave\n2. continue into the trees\n>")
     if clearing ==  "1":
-        event_start()
+        event_cave()
     elif clearing == "2":
         event_strait_path()
     else:
@@ -139,7 +171,7 @@ def event_chase():
                 event_chase()
             elif replay == "2":
                 print("\n"*10)
-                event_start()
+                event_cave()
             else:
                 error()
    
@@ -157,7 +189,7 @@ def event_chase():
                 event_chase()
             elif replay == "2":
                 print("\n"*10)
-                event_start()   
+                event_cave()   
             else:
                 error()
 
@@ -172,7 +204,7 @@ def event_chase():
                 event_chase()
             elif replay == "2":
                 print("\n"*10)
-                event_start()
+                event_cave()
             else:
                 error()
    
@@ -196,7 +228,7 @@ def event_chase_run():
                     event_chase()
                 elif replay == "2":
                     print("\n"*10)
-                    event_start()
+                    event_cave()
                 else:
                     error()
 
@@ -322,7 +354,7 @@ def ending():
     restart = input("Play Again?\n1. yes\n2. no\n>")
     if restart == "1":
         print("\n"*20)
-        event_start()
+        event_cave()
     else:
         print("i'll take that as a no")
         sys.exit("see you later")
@@ -335,24 +367,70 @@ def death_ending(cause,text):
     print(text)
     print("***************************************************")
     print("\n"*5)
-    pause = input("Enter to continue\n>")
     dashes()
     while True:
         restart = input("Type 1 to restart\n>")
         if restart == "1":
             print("\n"*20)
-            event_start()
+            event_cave()
         if restart == "2":
             sys.exit("see you later")
         else:
             half_dash()
             print("Rather than not typing 1\nyou can type 2 to end game")
     death_ending(death_cause, death_text)
-
-event_moon()
 '''
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----the great divide------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----the great divide------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----the great divide------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 '''
 
+#more variables 
+max_health = 100
+current_health = 100
+inventory = []
+
+def status():
+    half_dash()
+    print(f"Health: {current_health}/{max_health}")
+    print(f"Inventory:\n-{"Inventory empty" if inventory == [] else " -".join(inventory)}") #only strings can be put in inventory
+    pause = input("\nEnter to return\n>")
+    print(" - "*17)
+
+def save():
+    pass
+def load():
+    pass
+
+def event_cave_lookaround():
+    global small_unlocked
+    small_unlocked = True
+    dashes()
+    print("As you look around you bump into the wall and it crumbles\nbehind the wall is a smaller room")
+    look_around = input("Current options:\n1. Investigate the smaller room\n2. Continue looking around in the larger room\n3. leave the cave\n>")
+    if look_around == "1":
+        room_save()
+    if look_around == "2":
+        text_cave_lookaround()
+    if look_around == "3":
+        event_leave()
+    else:
+        error()
+        event_cave_lookaround()
+
+def text_cave_lookaround():
+    half_dash()
+    print("The walls are not very stable\nIt seems they could fall at any moment")
+    choice = input("Current options:\n1. Investigate the small room\n2. Leave the cave")
+    if choice == "1":
+        room_save()
+    elif choice == "2":
+        event_leave()
+    else:
+        error()
+        text_cave_lookaround()
+
+def room_save():
+    print("There  are few features in the small room\nA large carpet in the center of the circular room\nFour large bookcases ")
+
+event_cave()
