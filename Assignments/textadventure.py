@@ -5,10 +5,13 @@ import random
 var_loop_count =0
 chase_monster = False
 small_unlocked = False
+dash_count =0
 #repeated functions
-def dashes():   
-    print("\n"+"-"*51)
+def dashes():
+    dash_count += 1   
+    print(f"\n{dash_count}{"+"*51}")
 def half_dash():
+    dash_count += 1   
     print("\n"+" - "*17)
 def error():
     print("Error: not an option\nPlease type the number of the choice you would like")
@@ -28,7 +31,7 @@ def event_cave():
         if exit == "1":
             text_cave_lookaround()
         elif exit == "2":
-            event_small_room_investigate()
+            room_save()
         elif exit == "3":
             event_leave()
         else:
@@ -421,9 +424,10 @@ def event_cave_lookaround():
 def text_cave_lookaround():
     half_dash()
     print("The walls are not very stable\nIt seems they could fall at any moment")
-    choice = input("Current options:\n1. Investigate the small room\n2. Leave the cave")
+    choice = input("Current options:\n1. Investigate the small room\n2. Leave the cave\n>")
     if choice == "1":
         room_save()
+        dashes()
     elif choice == "2":
         event_leave()
     else:
@@ -431,6 +435,47 @@ def text_cave_lookaround():
         text_cave_lookaround()
 
 def room_save():
-    print("There  are few features in the small room\nA large carpet in the center of the circular room\nFour large bookcases ")
+    global inventory
+    print("There  are few features in the small room\nA large carpet in the center of the circular room\nFour empty large bookcases along the walls\nA desk with a clock on the wall above it")
+    investigate_choice = input("Current options\n1. Investigate Carpet\n2. Investigate bookcases\n3. Investigate desk\n4. Investigate clock\n5. Return to the main room\n>")
+    
+    if investigate_choice == "1":
+        half_dash()
+        print("You search the carpet")
+        if "key" not in inventory:
+            print("Under the edge you find a key and take it")
+            inventory.append("key")
+        else:
+            print("there is nothing new")
+        half_dash()
+        room_save()
+    
+    elif investigate_choice == "2":
+        half_dash()
+        print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nTHe other bookshelves have nothing behind them.")
+        half_dash()
+        room_save()
 
-event_cave()
+    elif investigate_choice == "3":
+        half_dash()
+        print("")
+        half_dash()
+        room_save()
+    
+    elif investigate_choice == "4":
+        pass
+
+    elif investigate_choice == "4":
+        pass
+    
+    else:
+        error()
+        room_save
+
+def event_set_clock():
+    pass
+
+
+
+room_save()
+status()
