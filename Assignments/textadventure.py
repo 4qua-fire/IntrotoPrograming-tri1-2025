@@ -8,11 +8,13 @@ small_unlocked = False
 dash_count =0
 #repeated functions
 def dashes():
-    dash_count += 1   
-    print(f"\n{dash_count}{"+"*51}")
+	global dash_count
+	dash_count += 1
+	print(f"\n{dash_count}{"+"*51}")
 def half_dash():
-    dash_count += 1   
-    print("\n"+" - "*17)
+	global dash_count
+	dash_count += 1
+	print(f"\n{dash_count}{" + "*17}")
 def error():
     print("Error: not an option\nPlease type the number of the choice you would like")
 def ending_dash():
@@ -31,7 +33,7 @@ def event_cave():
         if exit == "1":
             text_cave_lookaround()
         elif exit == "2":
-            room_save()
+            event_small_room()
         elif exit == "3":
             event_leave()
         else:
@@ -393,10 +395,12 @@ max_health = 100
 current_health = 100
 inventory = []
 
+key_obtained = False
+
 def status():
     half_dash()
     print(f"Health: {current_health}/{max_health}")
-    print(f"Inventory:\n-{"Inventory empty" if inventory == [] else " -".join(inventory)}") #only strings can be put in inventory
+    print(f"Inventory:\n{ "Inventory empty" if inventory == [] else " -".join(inventory)}")
     pause = input("\nEnter to return\n>")
     print(" - "*17)
 
@@ -412,7 +416,7 @@ def event_cave_lookaround():
     print("As you look around you bump into the wall and it crumbles\nbehind the wall is a smaller room")
     look_around = input("Current options:\n1. Investigate the smaller room\n2. Continue looking around in the larger room\n3. leave the cave\n>")
     if look_around == "1":
-        room_save()
+        event_small_room()
     if look_around == "2":
         text_cave_lookaround()
     if look_around == "3":
@@ -426,15 +430,15 @@ def text_cave_lookaround():
     print("The walls are not very stable\nIt seems they could fall at any moment")
     choice = input("Current options:\n1. Investigate the small room\n2. Leave the cave\n>")
     if choice == "1":
-        room_save()
-        dashes()
+		dashes()
+        event_small_room()
     elif choice == "2":
         event_leave()
     else:
         error()
         text_cave_lookaround()
 
-def room_save():
+def event_small_room():
     global inventory
     print("There  are few features in the small room\nA large carpet in the center of the circular room\nFour empty large bookcases along the walls\nA desk with a clock on the wall above it")
     investigate_choice = input("Current options\n1. Investigate Carpet\n2. Investigate bookcases\n3. Investigate desk\n4. Investigate clock\n5. Return to the main room\n>")
@@ -442,40 +446,50 @@ def room_save():
     if investigate_choice == "1":
         half_dash()
         print("You search the carpet")
-        if "key" not in inventory:
+        if not key_obtained:
             print("Under the edge you find a key and take it")
             inventory.append("key")
         else:
             print("there is nothing new")
         half_dash()
-        room_save()
+        event_small_room()
     
     elif investigate_choice == "2":
         half_dash()
         print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nTHe other bookshelves have nothing behind them.")
         half_dash()
-        room_save()
+        event_small_room()
 
     elif investigate_choice == "3":
         half_dash()
-        print("")
+        print("You take a look at the desk\nThere is nothing on top or within its two drawers")
         half_dash()
-        room_save()
+        event_small_room()
     
     elif investigate_choice == "4":
-        pass
+        event_set_clock()
 
-    elif investigate_choice == "4":
-        pass
+    elif investigate_choice == "5":
+        event_cave()
     
     else:
         error()
-        room_save
+        event_small_room()
 
 def event_set_clock():
-    pass
+    dashes()
+	print("You take a look at the clock\nIts hands are loose\nYou could probably fix it")
+	time = input("Fix clock?\n1. Yes\n2. No\n> c2")
+	if time == "1":
+		event_cave_route_start()
+	elif time == "2":
+		event_small_room()
+
+def event_cave_route_start():
+	dashes()
+	print("Gravel starts to fall as the room starts to shake\nThere is the sound of boulders falling in the main room\nA hole opens in the ceiling\the moon shines directly above")
+	cave_route_choice = input("Current options:\n1. Return to the main room\n 2. set the clock
 
 
-
-room_save()
+event_small_room()
 status()
