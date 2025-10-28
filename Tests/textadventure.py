@@ -16,7 +16,7 @@ def half_dash():
 	dash_count += 1
 	print(f"\n{dash_count}{" - "*17}")
 def error():
-    print("Error: not an option\nPlease type the number of the choice you would like")
+    print("Error: not an option\nPlease type the value of the choice you would like")
 def ending_dash():
     print("\n"*5)
     print("*"*51)
@@ -400,6 +400,7 @@ current_health = 100
 inventory = []
 
 key_obtained = False
+axe_obtained = False
 
 def status():
     half_dash()
@@ -494,6 +495,7 @@ def event_set_clock():
         event_set_clock()
 
 def text_cave_route_start():
+    global dining_room_name, nest_room_name, lab_room_name, oneway_room_name
     dashes()
     print("Gravel starts to fall as the room starts to shake\nThere is the sound of boulders falling in the main room\nA hole opens in the ceiling\the moon shines directly above\nyou leave the clock to go check out the main room\nMaybe you can set the time later")
     print("Boulders cover the entrance to the cave\nYou cannot leave without breaking them")
@@ -510,7 +512,7 @@ def event_entrance():
     dashes()
     print("The entrance is blocked by bolders\nMaybe if you had a tool you could get out")
     if True:
-        pause = input("Enter to return to the main room")
+        pause = input("Enter to return to the main room\n")
         room_main()
 
 
@@ -518,15 +520,18 @@ def event_entrance():
 def room_main():
     dashes()
     print("You are now in the main room")
-    main_room_path = input(f"Current options:\n1. Investigate the entrance\n2. go to the clock room\n3. go to the {dining_room_name}\n4. go to the {nest_room_name}\n>")
+    main_room_path = input(f"Current options:\n1. Investigate the entrance\n2. go to the clock room\n3. go to the {dining_room_name}\n4. go to the {nest_room_name}\ncs. Check status\n>")
     if main_room_path == "1":
         event_entrance()
     if main_room_path == "2":
-        pass
+        room_clock()
     if main_room_path == "3":
-        pass
+        room_dinner()
     if main_room_path == "4":
         pass
+    if main_room_path == "cs":
+        status()
+        room_main()
     else:
         error()
         room_main()
@@ -536,27 +541,35 @@ def room_clock():
     global inventory
     if True:
         print("The clock, carpet, desk, and bookshelves remain")
-        clock_choice = input("Current options:\n1. Investigate \n2. Set the time\n3. Return to the main room\n>")
+        clock_choice = input("Current options:\n1. Investigate \n2. Set the time\n3. Return to the main room\ncs. Check status\n>")
 
         if clock_choice == "1":
-            half_dash()
+            while True:
+                half_dash()
+                investigate_choice = input("investigate options:\n1. The carpet\n2. The bookshelves\n3. the desk\n4. Cancel")
+                if investigate_choice == "1":
+                    print("You search the carpet")
+                    if not key_obtained:
+                        print("Under the edge you find a key and take it")
+                        key_obtained = True
+                        inventory.append("key")
+                    else:
+                        print("there is nothing new")
+                    break
 
-            investigate_choice = input("investigate options:\n1. The carpet\n2. The bookshelves\n3. the desk")
-            if investigate_choice == "1":
-                print("You search the carpet")
-                if not key_obtained:
-                    print("Under the edge you find a key and take it")
-                    key_obtained = True
-                    inventory.append("key")
+                elif investigate_choice == "2":
+                    if True:
+                        print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nTHe other bookshelves have nothing behind them.")
+                    break
+
+                elif investigate_choice == "3":
+                    print("You take a look at the desk\nThere is nothing on top or within its two drawers")
+                    break
+                elif investigate_choice =="4":
+                    break
                 else:
-                    print("there is nothing new")
+                    error()
 
-            elif investigate_choice == "2":
-                if True:
-                    print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nTHe other bookshelves have nothing behind them.")
-
-            elif investigate_choice == "3":
-                print("You take a look at the desk\nThere is nothing on top or within its two drawers")
 
             half_dash()
             room_clock()
@@ -567,11 +580,49 @@ def room_clock():
 
         elif clock_choice == "3":
             room_main()
+        
+        elif clock_choice == "cs":
+            status()
+            room_clock()
 
         else:
             error()
             room_clock()
 
+def room_dinner():
+    global inventory, dining_room_name
+    if axe_obtained == False:
+        print(f"You enter the {dining_room_name}")
+        if dining_room_name == "front left room":
+            print("the room appears to be some sort of dining room\nThere are four tables and a counter carved from the cave floor\nThere are 2 simple wooden stools at each table\nAn axe sits pn the wall behind the counter")
+            dining_room_name = "dining room"
+        else:
+            print(f"The {dining_room_name} remains the same")
 
+        dinner_choice  = input("Current Options:\n1. Investigate\n2. Return to main room\ncs. check status")
+        
+        if dinner_choice == "1":
+            while True:
+                half_dash()
+                investigate_option = input("Investigate options:\n1. The tables\n2. The counter\n3. The stools\n4. The axe\n5. Cancel")
+                if investigate_option == "1":
+                    print("the tables")
+                    break
+                elif investigate_option == "2":
+                    print("the counter")
+                    break
+                elif investigate_option == "3":
+                    print("the stools")
+                    break
+                elif investigate_option == "4":
+                    print("the axe")
+                    break
+                elif investigate_option == "5":
+                    break
+                else:
+                    error()
+            half_dash()
+            room_dinner()
 
+            
 event_cave()
