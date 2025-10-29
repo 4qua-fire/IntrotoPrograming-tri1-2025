@@ -28,7 +28,7 @@ def event_cave():
     dashes()
     if small_unlocked == True:
         print("You are back in the main room of the cave\n")
-        exit = input("Current options:\n1. Look around the main room\n2. Look around the small room\n3. Leave the cave\n>")
+        exit = input("\nCurrent Options:\n1. Look around the main room\n2. Look around the small room\n3. Leave the cave\n>")
 
         if exit == "1":
             text_cave_lookaround()
@@ -44,7 +44,7 @@ def event_cave():
         chase_monster = False
         small_unlocked = False
         print("You are in a cave\nYou dont know where you are\n")
-        exit = input("Current options:\n1. Stay in the cave\n2. Leave the cave\n>")
+        exit = input("\nCurrent Options:\n1. Stay in the cave\n2. Leave the cave\n>")
 
         if exit == "1":
             event_stay()
@@ -59,7 +59,7 @@ def event_cave():
 def event_stay():
     dashes()
     print("You decided you will stay in the cave")
-    stay = input("Current options:\n1. Look around the cave\n2. Leave the cave\n>")
+    stay = input("\nCurrent Options:\n1. Look around the cave\n2. Leave the cave\n>")
     if stay == "1":
         event_cave_lookaround()
     elif stay == "2":
@@ -77,7 +77,7 @@ def event_stay():
 def event_leave():
     dashes()
     print("You left the cave\nYou now see that you are in a clearing in a forest")
-    clearing = input("Current options:\n1. return to the cave\n2. continue into the trees\n3. investigate the trees\n>")
+    clearing = input("\nCurrent Options:\n1. return to the cave\n2. continue into the trees\n3. investigate the trees\n>")
     if clearing ==  "1":
         event_cave()
     elif clearing == "2":
@@ -91,7 +91,7 @@ def event_leave():
 def text_investigate_trees():
     half_dash()
     print("There is somthing off about the trees\nAll of the trees are the exact same\nNot just the trees but the scenery behind them too")
-    clearing = input("Current options:\n1. return to the cave\n2. continue into the trees\n>")
+    clearing = input("\nCurrent Options:\n1. return to the cave\n2. continue into the trees\n>")
     if clearing ==  "1":
         event_cave()
     elif clearing == "2":
@@ -103,7 +103,7 @@ def text_investigate_trees():
 def event_strait_path():
     dashes()
     print("Ahead of you the path seems to continue endlessly\nThe trees mirror eachother on both sides\nYou hear the sound of trees break behind you")
-    path = input("Current options:\n1. Continue onward\n2. turn around\n3. leave path\n>")
+    path = input("\nCurrent Options:\n1. Continue onward\n2. turn around\n3. leave path\n>")
     if path == "1":
         event_loop()
     elif path == "2": 
@@ -127,7 +127,7 @@ def event_loop():
     global var_loop_count
     dashes()
     print("The path seems to strech endlessly")
-    loop_path = input("Current options:\n1. Continue forward\n2. Turn around\n3. Leave path\n>")
+    loop_path = input("\nCurrent Options:\n1. Continue forward\n2. Turn around\n3. Leave path\n>")
     if loop_path == "1":
         var_loop_count+= 1
         event_loop()
@@ -143,7 +143,7 @@ def event_loop():
 def event_moon():
     dashes()
     print("The moon shines brightly through the trees\nFollowing the path of least resistance you find yourself at a juction")
-    moon_path = input("Current options:\n1. take the left path\n2. take the right path\n>")
+    moon_path = input("\nCurrent Options:\n1. take the left path\n2. take the right path\n>")
     if moon_path == "1":
         dashes()
         print("RESPAWN ACTIVATED")
@@ -242,7 +242,7 @@ def event_chill():
         print("the danger has passed\nBehind you the monster continues running down the other path\nIts shreiks gradually fading behind you")
         half_dash()
     print("It is getting cold now\nA mist forms with each breath")
-    chill_action = input("Current options:\n1. Continue onward\n2. attempt to find warmth\n>")
+    chill_action = input("\nCurrent Options:\n1. Continue onward\n2. attempt to find warmth\n>")
     if chill_action == "1":
         ending_forest_1()
     elif chill_action == "2":
@@ -254,7 +254,7 @@ def event_chill():
 def event_warmth():
     dashes()
     print("You manage to find a blanket\nIt has gotten colder but maybe it would allow you to get some rest")
-    warmth_action = input("Current options:\n1. Take a rest\n2. Continue onward\n>")
+    warmth_action = input("\nCurrent Options:\n1. Take a rest\n2. Continue onward\n>")
     if warmth_action == "1":
         ending_forest_2()
     elif warmth_action == "2":
@@ -352,7 +352,7 @@ def ending_forest_3():
     ending()
 
 def ending():
-    pause = input("Enter to continue\n>")
+    pause = input("\nEnter to continue>")
     dashes()
     print("YOU WIN (kinda)\nthanks for playing\n")
     restart = input("Play Again?\n1. yes\n2. no\n>")
@@ -397,7 +397,7 @@ oneway_room_name = "mysterious room"
 
 max_health = 100
 current_health = 100
-inventory = []
+inventory = set()
 
 key_obtained = False
 axe_obtained = False
@@ -406,7 +406,7 @@ def status():
     half_dash()
     print(f"Health: {current_health}/{max_health}")
     print(f"Inventory:\n{ "-Inventory empty" if inventory == [] else " -".join(inventory)}")
-    pause = input("\nEnter to return\n>")
+    pause = input("\nEnter to return>")
     print(" - "*17)
 
 def save():
@@ -419,7 +419,7 @@ def event_cave_lookaround():
     small_unlocked = True
     dashes()
     print("As you look around you bump into the wall and it crumbles\nbehind the wall is a smaller room")
-    look_around = input("Current options:\n1. Investigate the smaller room\n2. Continue looking around in the larger room\n3. leave the cave\n>")
+    look_around = input("\nCurrent Options:\n1. Investigate the smaller room\n2. Continue looking around in the larger room\n3. leave the cave\n>")
     if look_around == "1":
         event_small_room()
     if look_around == "2":
@@ -433,7 +433,7 @@ def event_cave_lookaround():
 def text_cave_lookaround():
     half_dash()
     print("The walls are not very stable\nIt seems they could fall at any moment")
-    choice = input("Current options:\n1. Investigate the small room\n2. Leave the cave\n>")
+    choice = input("\nCurrent Options:\n1. Investigate the small room\n2. Leave the cave\n>")
     if choice == "1":
         dashes()
         event_small_room()
@@ -454,7 +454,7 @@ def event_small_room():
         if not key_obtained:
             print("Under the edge you find a key and take it")
             key_obtained = True
-            inventory.append("key")
+            inventory.add("key")
         else:
             print("there is nothing new")
         half_dash()
@@ -497,11 +497,11 @@ def event_set_clock():
 def text_cave_route_start():
     global dining_room_name, nest_room_name, lab_room_name, oneway_room_name
     dashes()
-    print("Gravel starts to fall as the room starts to shake\nThere is the sound of boulders falling in the main room\nA hole opens in the ceiling\the moon shines directly above\nyou leave the clock to go check out the main room\nMaybe you can set the time later")
+    print("Gravel starts to fall as the room starts to shake\nThere is the sound of boulders falling in the main room\nA hole opens in the ceiling\nThe moon shines directly above\nyou leave the clock to go check out the main room\nMaybe you can set the time later")
     print("Boulders cover the entrance to the cave\nYou cannot leave without breaking them")
     half_dash()
     print("Two new paths have shown\nthemselves one to the left of the room with the clock\nOne to your right\nThe clock room is to your left")
-    pause = input("enter to continue\n>")
+    pause = input("\nEnter to continue>")
     dining_room_name = "front left room"
     nest_room_name = "right room"
     lab_room_name = "mysterious room"
@@ -520,12 +520,14 @@ def event_entrance():
 def room_main():
     dashes()
     print("You are now in the main room")
-    main_room_path = input(f"Current options:\n1. Investigate the entrance\n2. go to the clock room\n3. go to the {dining_room_name}\n4. go to the {nest_room_name}\ncs. Check status\n>")
+    main_room_path = input(f"\nCurrent Options:\n1. Investigate the entrance\n2. go to the clock room\n3. go to the {dining_room_name}\n4. go to the {nest_room_name}\ncs. Check status\n>")
     if main_room_path == "1":
         event_entrance()
     if main_room_path == "2":
+        dashes()
         room_clock()
     if main_room_path == "3":
+        dashes()
         room_dinner()
     if main_room_path == "4":
         pass
@@ -541,7 +543,7 @@ def room_clock():
     global inventory
     if True:
         print("The clock, carpet, desk, and bookshelves remain")
-        clock_choice = input("Current options:\n1. Investigate \n2. Set the time\n3. Return to the main room\ncs. Check status\n>")
+        clock_choice = input("\nCurrent Options:\n1. Investigate \n2. Set the time\n3. Return to the main room\ncs. Check status\n>")
 
         if clock_choice == "1":
             while True:
@@ -552,18 +554,21 @@ def room_clock():
                     if not key_obtained:
                         print("Under the edge you find a key and take it")
                         key_obtained = True
-                        inventory.append("key")
+                        inventory.add("key")
                     else:
                         print("there is nothing new")
+                    pause = input("\nEnter to continue>")
                     break
 
                 elif investigate_choice == "2":
                     if True:
                         print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nTHe other bookshelves have nothing behind them.")
+                        pause = input("\nEnter to continue>")
                     break
 
                 elif investigate_choice == "3":
                     print("You take a look at the desk\nThere is nothing on top or within its two drawers")
+                    pause = input("\nEnter to continue>")
                     break
                 elif investigate_choice =="4":
                     break
@@ -577,6 +582,7 @@ def room_clock():
         elif clock_choice == "2":
             print("You Set the time to 12:00")
             save()
+            room_clock()
 
         elif clock_choice == "3":
             room_main()
@@ -590,32 +596,50 @@ def room_clock():
             room_clock()
 
 def room_dinner():
-    global inventory, dining_room_name
+    global inventory, dining_room_name, axe_obtained
     if axe_obtained == False:
         print(f"You enter the {dining_room_name}")
         if dining_room_name == "front left room":
-            print("the room appears to be some sort of dining room\nThere are four tables and a counter carved from the cave floor\nThere are 2 simple wooden stools at each table\nAn axe sits pn the wall behind the counter")
+            print("the room appears to be some sort of dining room\nThere are four tables and a counter\nThere are 2 simple stools at each table\nAn axe sits pn the wall behind the counter")
             dining_room_name = "dining room"
         else:
             print(f"The {dining_room_name} remains the same")
 
-        dinner_choice  = input("Current Options:\n1. Investigate\n2. Return to main room\ncs. check status")
+        dinner_choice  = input("\nCurrent Options:\n1. Investigate\n2. Return to main room\ncs. check status\n>")
         
         if dinner_choice == "1":
             while True:
+                investigate_option = input("Investigate options:\n1. The tables\n2. The counter\n3. The stools\n4. The axe\n5. Cancel\n>")
                 half_dash()
-                investigate_option = input("Investigate options:\n1. The tables\n2. The counter\n3. The stools\n4. The axe\n5. Cancel")
                 if investigate_option == "1":
-                    print("the tables")
+                    print("the tables are part of the ground carved from the very cave floor you stand on\nStrangely you find skeletons on each of the tables")
+                    pause = input("\nEnter to continue>")
                     break
                 elif investigate_option == "2":
-                    print("the counter")
+                    print("The counter is on the opsite end of the room as the entrance\nthe counter is part of the floor\nThe countertop is smooth and cool to the touch")
+                    pause = input("\nEnter to continue>")
                     break
                 elif investigate_option == "3":
-                    print("the stools")
+                    print("the stools are sturdy and smooth to the touch\nEach stool is made of wood")
+                    pause = input("\nEnter to continue>")
                     break
                 elif investigate_option == "4":
-                    print("the axe")
+                    print("An axe hangs on the wall behind the counter")
+                    while True:
+                        take_axe= input("take the axe\n1. Yes\n2. no\n>")
+                        if take_axe == "1":
+                            axe_obtained = True
+                            inventory.add("Axe")
+                            half_dash()
+                            print("You took the axe")
+
+                            pause = input("\nEnter to continue>")
+                            break
+                        if take_axe == "2":
+                            break
+                        else:
+                            error()
+
                     break
                 elif investigate_option == "5":
                     break
@@ -623,6 +647,35 @@ def room_dinner():
                     error()
             half_dash()
             room_dinner()
+        elif dinner_choice == "2":
+            room_main()
+        elif dinner_choice == "cs":
+            status()
+            room_clock()
+    else:
+        print(f"The {dining_room_name} remains the same")
+        dinner_choice  = input("\nCurrent Options:\n1. Investigate\n2. Return to main room\ncs. check status\n>")
+        if dinner_choice == "1":
+            while True:
+                investigate_option = input("Investigate options:\n1. The tables\n2. The counter\n3. The stools\n4. Cancel\n>")
+                half_dash()
+                if investigate_option == "1":
+                    print("the tables are part of the ground carved from the very cave floor you stand on\nStrangely you find skeletons on each of the tables")
+                    pause = input("\nEnter to continue>")
+                    break
+                elif investigate_option == "2":
+                    print("The counter is on the opsite end of the room as the entrance\nthe counter is part of the floor\nThe countertop is smooth and cool to the touch")
+                    pause = input("\nEnter to continue>")
+                    break
+                elif investigate_option == "3":
+                    print("the stools are sturdy and smooth to the touch\nEach stool is made of wood")
+                    pause = input("\nEnter to continue>")
+                    break
+                elif investigate_option == "4":
+                    break
+                else:
+                    error()
+            half_dash()
+            room_dinner()
 
-            
-event_cave()
+room_dinner()
