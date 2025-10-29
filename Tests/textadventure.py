@@ -392,7 +392,7 @@ def death_ending(cause,text):
 #more variables 
 dining_room_name = "front left room"
 nest_room_name = "right room"
-lab_room_name = "mysterious room"
+lab_room_name = "Hallway"
 oneway_room_name = "mysterious room"
 
 max_health = 100
@@ -400,7 +400,16 @@ current_health = 100
 inventory = set()
 
 key_obtained = False
-axe_obtained = False
+current_tool = None
+
+frog_count = 0
+frog_max = 5
+
+nest_tool_located = False
+
+current_location = None
+dinner_tool = "axe"
+nest_tool = "pickaxe"
 
 def status():
     half_dash()
@@ -518,6 +527,8 @@ def event_entrance():
 
 
 def room_main():
+    global current_location
+    current_location = "main room"
     dashes()
     print("You are now in the main room")
     main_room_path = input(f"\nCurrent Options:\n1. Investigate the entrance\n2. go to the clock room\n3. go to the {dining_room_name}\n4. go to the {nest_room_name}\ncs. Check status\n>")
@@ -530,7 +541,8 @@ def room_main():
         dashes()
         room_dinner()
     if main_room_path == "4":
-        pass
+        dashes()
+        room_nest()
     if main_room_path == "cs":
         status()
         room_main()
@@ -540,7 +552,8 @@ def room_main():
 
 
 def room_clock():
-    global inventory
+    global current_location, inventory 
+    current_location = "clock room"
     if True:
         print("The clock, carpet, desk, and bookshelves remain")
         clock_choice = input("\nCurrent Options:\n1. Investigate \n2. Set the time\n3. Return to the main room\ncs. Check status\n>")
@@ -596,11 +609,12 @@ def room_clock():
             room_clock()
 
 def room_dinner():
-    global inventory, dining_room_name, axe_obtained
-    if axe_obtained == False:
-        print(f"You enter the {dining_room_name}")
+    global inventory, dining_room_name, current_tool, current_location 
+    current_location = "dinner"
+    if dinner_tool != None:
+        print(f"You are in the {dining_room_name}")
         if dining_room_name == "front left room":
-            print("the room appears to be some sort of dining room\nThere are four tables and a counter\nThere are 2 simple stools at each table\nAn axe sits pn the wall behind the counter")
+            print(f"the room appears to be some sort of dining room\nThere are four tables and a counter\nThere are 2 simple stools at each table\nthe {dinner_tool} sits pn the wall behind the counter")
             dining_room_name = "dining room"
         else:
             print(f"The {dining_room_name} remains the same")
@@ -624,22 +638,7 @@ def room_dinner():
                     pause = input("\nEnter to continue>")
                     break
                 elif investigate_option == "4":
-                    print("An axe hangs on the wall behind the counter")
-                    while True:
-                        take_axe= input("take the axe\n1. Yes\n2. no\n>")
-                        if take_axe == "1":
-                            axe_obtained = True
-                            inventory.add("Axe")
-                            half_dash()
-                            print("You took the axe")
-
-                            pause = input("\nEnter to continue>")
-                            break
-                        if take_axe == "2":
-                            break
-                        else:
-                            error()
-
+                    event_tool_found()
                     break
                 elif investigate_option == "5":
                     break
@@ -651,6 +650,9 @@ def room_dinner():
             room_main()
         elif dinner_choice == "cs":
             status()
+            room_clock()
+        else:
+            error()
             room_clock()
     else:
         print(f"The {dining_room_name} remains the same")
@@ -664,7 +666,7 @@ def room_dinner():
                     pause = input("\nEnter to continue>")
                     break
                 elif investigate_option == "2":
-                    print("The counter is on the opsite end of the room as the entrance\nthe counter is part of the floor\nThe countertop is smooth and cool to the touch")
+                    print("The counter is on the opsite end of the room as the entrance\nthe countker is part of the floor\nThe countertop is smooth and cool to the touch")
                     pause = input("\nEnter to continue>")
                     break
                 elif investigate_option == "3":
@@ -678,4 +680,98 @@ def room_dinner():
             half_dash()
             room_dinner()
 
-room_dinner()
+def room_nest():
+    global inventory, nest_room_name, current_location, nest_tool_located
+    current_location = "nest"
+    if True:
+        print(f"you are in the {nest_room_name}")
+        if nest_room_name == "right room":
+            print("The right room is a large room\nThe floor is dirt rather than stone\nIt looks vaguely like a bids nest there are branches around the entire perimeter\nThere is a hall to the right")
+            nest_room_name = "nest"
+        else:
+            print(f"the {nest_room_name} remains the same as before\nthe hall remains on the right")
+        
+        nest_choice = input(f"\nCurrent options:\n1. Search the nest\n2. Return to the main room\n3. go to the {lab_room_name}\ncs. Check status\n>")
+        half_dash()
+        if nest_choice == "1":
+            next_finding = random.randint(1,20)
+            if next_finding >= 19:
+                print("In the stick you find something magical\n\nYou find a spinning frog in a cool hat")
+            if next_finding >= 12 or nest_tool_located:
+                nest_tool_located = True
+                event_tool_found()
+            else:
+                print("you did not find anything")
+                room_nest()
+       
+        if nest_choice == "2":
+            room_main()
+        if nest_choice == "3":
+            event_locked_door()
+        if nest_choice == "cs":
+            status()
+            room_nest()
+        else:
+            error()
+            room_nest()
+
+
+def event_tool_found():
+    half_dash()
+    global current_location,nest_tool,dinner_tool
+    if current_location == "nest":
+        print(f"You find the {nest_tool} in the nest")
+        if current_tool != None:
+            print("You cannot store both tools")
+            tool_choice = input(f"swap the {current_tool} for the {nest_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {nest_tool}")
+                temp_tool = current_tool
+                current_tool = nest_tool
+                nest_tool = temp_tool
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+        elif current_tool == None:
+            tool_choice = input(f"Take the{nest_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {nest_tool}")
+                temp_tool = current_tool
+                current_tool = nest_tool
+                nest_tool = temp_tool
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+
+    if current_location != "dinner":
+        print(f"You go to the {dinner_tool} on the wall")
+        if current_tool != None:
+            print("You cannot store both tools")
+            tool_choice = input(f"swap the {current_tool} for the {dinner_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {dinner_tool}")
+                temp_tool = current_tool
+                current_tool = dinner_tool
+                dinner_tool = temp_tool
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+        elif current_tool == None:
+            tool_choice = input(f"Take the{dinner_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {dinner_tool}")
+                temp_tool = current_tool
+                current_tool = dinner_tool
+                dinner_tool = temp_tool
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+
+
+
+def event_locked_door():
+    pass
