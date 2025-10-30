@@ -745,7 +745,7 @@ def event_tool_found():
             elif tool_choice == "2":
                 return
 
-    if current_location != "dinner":
+    if current_location == "dinner":
         print(f"You go to the {dinner_tool} on the wall")
         if current_tool != None:
             print("You cannot store both tools")
