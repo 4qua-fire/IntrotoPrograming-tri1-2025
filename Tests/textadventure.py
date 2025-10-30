@@ -10,11 +10,11 @@ dash_count =0
 def dashes():
 	global dash_count
 	dash_count += 1
-	print(f"\n{dash_count}{"-"*51}")
+	print(f"\n{dash_count}{'-'*51}")
 def half_dash():
 	global dash_count
 	dash_count += 1
-	print(f"\n{dash_count}{" - "*17}")
+	print(f"\n{dash_count}{' - '*17}")
 def error():
     print("Error: not an option\nPlease type the value of the choice you would like")
 def ending_dash():
@@ -534,16 +534,16 @@ def room_main():
     main_room_path = input(f"\nCurrent Options:\n1. Investigate the entrance\n2. go to the clock room\n3. go to the {dining_room_name}\n4. go to the {nest_room_name}\ncs. Check status\n>")
     if main_room_path == "1":
         event_entrance()
-    if main_room_path == "2":
+    elif main_room_path == "2":
         dashes()
         room_clock()
-    if main_room_path == "3":
+    elif main_room_path == "3":
         dashes()
         room_dinner()
-    if main_room_path == "4":
+    elif main_room_path == "4":
         dashes()
         room_nest()
-    if main_room_path == "cs":
+    elif main_room_path == "cs":
         status()
         room_main()
     else:
