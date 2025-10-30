@@ -404,6 +404,8 @@ current_tool = None
 
 frog_count = 0
 frog_max = 5
+cool_frog = False
+magic_frog = False
 
 nest_tool_located = False
 
@@ -413,6 +415,7 @@ nest_tool = "pickaxe"
 
 def status():
     half_dash()
+    print(f"Frogs found {frog_count}/{frog_max}")
     print(f"Health: {current_health}/{max_health}")
     print(f"Inventory:\n{ "-Inventory empty" if inventory == [] else " -".join(inventory)}")
     pause = input("\nEnter to return>")
@@ -552,7 +555,7 @@ def room_main():
 
 
 def room_clock():
-    global current_location, inventory 
+    global current_location, inventory, magic_frog, frog_count, frog_max
     current_location = "clock room"
     if True:
         print("The clock, carpet, desk, and bookshelves remain")
@@ -561,7 +564,7 @@ def room_clock():
         if clock_choice == "1":
             while True:
                 half_dash()
-                investigate_choice = input("investigate options:\n1. The carpet\n2. The bookshelves\n3. the desk\n4. Cancel")
+                investigate_choice = input("investigate options:\n1. The carpet\n2. The bookshelves\n3. the desk\n4. Cancel\n>")
                 if investigate_choice == "1":
                     print("You search the carpet")
                     if not key_obtained:
@@ -574,9 +577,17 @@ def room_clock():
                     break
 
                 elif investigate_choice == "2":
-                    if True:
-                        print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nTHe other bookshelves have nothing behind them.")
-                        pause = input("\nEnter to continue>")
+                    print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nThe other bookshelves have nothing behind them.")
+                    if "axe" in inventory and magic_frog == False:
+                        half_dash()
+                        book_break =input("you can try to use the axe to break the book shelf\n1. yes\n2. no\n>")
+                        if book_break == "1":
+                            half_dash()
+                            print("In the sticks you find something silly\n\nYou find a spinning frog in a magical hat")
+                            magic_frog = True
+                            frog_count += 1
+                            print(f"Frogs found {frog_count}/{frog_max}")
+                    pause = input("\nEnter to continue>")
                     break
 
                 elif investigate_choice == "3":
@@ -588,11 +599,11 @@ def room_clock():
                 else:
                     error()
 
-
             half_dash()
             room_clock()
 
         elif clock_choice == "2":
+            half_dash()
             print("You Set the time to 12:00")
             save()
             room_clock()
@@ -679,9 +690,17 @@ def room_dinner():
                     error()
             half_dash()
             room_dinner()
+        elif dinner_choice == "2":
+            room_main()
+        elif dinner_choice == "cs":
+            status()
+            room_clock()
+        else:
+            error()
+            room_clock()
 
 def room_nest():
-    global inventory, nest_room_name, current_location, nest_tool_located
+    global inventory, nest_room_name, current_location, nest_tool_located,frog_count, frog_max, cool_frog
     current_location = "nest"
     if True:
         print(f"you are in the {nest_room_name}")
@@ -695,9 +714,15 @@ def room_nest():
         half_dash()
         if nest_choice == "1":
             next_finding = random.randint(1,20)
-            if next_finding >= 19:
-                print("In the stick you find something magical\n\nYou find a spinning frog in a cool hat")
-            if next_finding >= 12 or nest_tool_located:
+            if next_finding >= 19 and cool_frog == False:
+                
+                print("In the sticks you find something magical\n\nYou find a spinning frog in a cool hat")
+                cool_frog = True
+                frog_count += 1
+                print(f"Frogs found {frog_count}/{frog_max}")
+               
+                pause = input("\nEnter to continue>")
+            if (next_finding >= 12 or nest_tool_located) and nest_tool != None:
                 nest_tool_located = True
                 event_tool_found()
             else:
@@ -718,7 +743,7 @@ def room_nest():
 
 def event_tool_found():
     half_dash()
-    global current_location, nest_tool, dinner_tool, current_tool
+    global current_location, nest_tool, dinner_tool, current_tool, inventory
     if current_location == "nest":
         print(f"You find the {nest_tool} in the nest")
         if current_tool != None:
@@ -726,52 +751,71 @@ def event_tool_found():
             tool_choice = input(f"swap the {current_tool} for the {nest_tool}\n1. Yes\n2. No\n>")
             if tool_choice == "1":
                 print(f"You take the {nest_tool}")
+                
+                inventory.discard(current_tool)
                 temp_tool = current_tool
                 current_tool = nest_tool
                 nest_tool = temp_tool
+                inventory.add(current_tool)
+
                 pause = input("\nEnter to continue>")
                 return
             elif tool_choice == "2":
                 return
-        elif current_tool == None:
-            tool_choice = input(f"Take the{nest_tool}\n1. Yes\n2. No\n>")
+        
+        if current_tool == None:
+            tool_choice = input(f"Take the {nest_tool}\n1. Yes\n2. No\n>")
             if tool_choice == "1":
                 print(f"You take the {nest_tool}")
+                
+                inventory.discard(current_tool)
                 temp_tool = current_tool
                 current_tool = nest_tool
                 nest_tool = temp_tool
+                inventory.add(current_tool)
+
                 pause = input("\nEnter to continue>")
                 return
             elif tool_choice == "2":
                 return
-
+            
     if current_location == "dinner":
-        print(f"You go to the {dinner_tool} on the wall")
+        print(f"You find the {dinner_tool} in the nest")
         if current_tool != None:
             print("You cannot store both tools")
             tool_choice = input(f"swap the {current_tool} for the {dinner_tool}\n1. Yes\n2. No\n>")
             if tool_choice == "1":
                 print(f"You take the {dinner_tool}")
+                
+                inventory.discard(current_tool)
                 temp_tool = current_tool
                 current_tool = dinner_tool
                 dinner_tool = temp_tool
+                inventory.add(current_tool)
+
                 pause = input("\nEnter to continue>")
                 return
             elif tool_choice == "2":
                 return
-        elif current_tool == None:
-            tool_choice = input(f"Take the{dinner_tool}\n1. Yes\n2. No\n>")
+        
+        if current_tool == None:
+            tool_choice = input(f"Take the {dinner_tool}\n1. Yes\n2. No\n>")
             if tool_choice == "1":
                 print(f"You take the {dinner_tool}")
+                
+                inventory.discard(current_tool)
                 temp_tool = current_tool
                 current_tool = dinner_tool
                 dinner_tool = temp_tool
+                inventory.add(current_tool)
+
                 pause = input("\nEnter to continue>")
                 return
             elif tool_choice == "2":
                 return
-
 
 
 def event_locked_door():
     pass
+
+status()
