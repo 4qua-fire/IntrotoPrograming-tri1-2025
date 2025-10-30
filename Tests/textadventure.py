@@ -398,20 +398,29 @@ oneway_room_name = "mysterious room"
 max_health = 100
 current_health = 100
 inventory = set()
+current_tool = None
 
 key_obtained = False
-current_tool = None
+boulders_destroyed = False
+door_unlocked = False
 
 frog_count = 0
 frog_max = 5
 cool_frog = False
 magic_frog = False
+silly_frog = False
+checked_for_frog = False
 
 nest_tool_located = False
 
 current_location = None
 dinner_tool = "axe"
 nest_tool = "pickaxe"
+
+
+
+
+
 
 def status():
     half_dash()
@@ -521,12 +530,44 @@ def text_cave_route_start():
     room_main()
 
 def event_entrance():
+    global boulders_destroyed
     dashes()
-    print("The entrance is blocked by bolders\nMaybe if you had a tool you could get out")
-    if True:
+    print("The entrance is blocked by bolders")
+    if boulders_destroyed == True:
+        event_escape()
+    elif "pickaxe" not in inventory:
+        print("Maybe if you had a tool you could get out")
         pause = input("Enter to return to the main room\n")
         room_main()
+    elif "pickaxe" in inventory:
+        print("You could probably use your pick axe to break them")
+        break_entrace = input("Break the rocks\n1. yes\n2. No\n>")
+        if break_entrace == "1":
+            event_escape()
+        elif break_entrace == "2":
+            room_main()
+        else:
+            error()
+            event_entrance()
 
+def event_escape():
+    global boulders_destroyed,frog_count,frog_max
+    dashes()
+    if boulders_destroyed == False:
+        print("You sucessfully manage to destroy the boulders ")
+        boulders_destroyed = True
+    print("You are at the entrance to the cave\nThe cave leads directly to a strait path\nThe trees are symetric on either side of the path")
+    if frog_count/frog_max != 1:
+        escape_option = input("Current options:\n1. Follow the path\n2. Go into the woods\n3. return to the cave")
+        if escape_option == "1":
+            ending_cave_1
+        if escape_option == "2":
+            ending_cave_2
+        if escape_option == "3":
+            room_main()
+        else:
+            error()
+            event_escape()
 
 
 def room_main():
@@ -620,7 +661,7 @@ def room_clock():
             room_clock()
 
 def room_dinner():
-    global inventory, dining_room_name, current_tool, current_location 
+    global inventory, dining_room_name, current_tool, current_location, checked_for_frog, frog_count, frog_max, silly_frog
     current_location = "dinner"
     if dinner_tool != None:
         print(f"You are in the {dining_room_name}")
@@ -637,8 +678,20 @@ def room_dinner():
                 investigate_option = input("Investigate options:\n1. The tables\n2. The counter\n3. The stools\n4. The axe\n5. Cancel\n>")
                 half_dash()
                 if investigate_option == "1":
-                    print("the tables are part of the ground carved from the very cave floor you stand on\nStrangely you find skeletons on each of the tables")
+                    print("the tables are part of the ground carved from the very cave floor you stand on")
+                    if checked_for_frog == True and silly_frog == False:
+                        half_dash()
+                        print("Under the table you enter a hidden encounter\n\nYou find a spinning frog in a silly hat")
+                        silly_frog = True
+                        frog_count += 1
+                        print(f"Frogs found {frog_count}/{frog_max}")
+                        pause = input("\nEnter to continue>")
+                    else: 
+                        print("Strangely you find skeletons under each of the tables")
+                    checked_for_frog = True
                     pause = input("\nEnter to continue>")
+                    
+                        
                     break
                 elif investigate_option == "2":
                     print("The counter is on the opsite end of the room as the entrance\nthe counter is part of the floor\nThe countertop is smooth and cool to the touch")
@@ -658,6 +711,7 @@ def room_dinner():
             half_dash()
             room_dinner()
         elif dinner_choice == "2":
+            checked_for_frog = False
             room_main()
         elif dinner_choice == "cs":
             status()
@@ -762,6 +816,9 @@ def event_tool_found():
                 return
             elif tool_choice == "2":
                 return
+            else:
+                error()
+                event_tool_found()
         
         if current_tool == None:
             tool_choice = input(f"Take the {nest_tool}\n1. Yes\n2. No\n>")
@@ -778,6 +835,9 @@ def event_tool_found():
                 return
             elif tool_choice == "2":
                 return
+            else:
+                error()
+                event_tool_found()
             
     if current_location == "dinner":
         print(f"You find the {dinner_tool} in the nest")
@@ -797,6 +857,9 @@ def event_tool_found():
                 return
             elif tool_choice == "2":
                 return
+            else:
+                error()
+                event_tool_found()
         
         if current_tool == None:
             tool_choice = input(f"Take the {dinner_tool}\n1. Yes\n2. No\n>")
@@ -813,9 +876,78 @@ def event_tool_found():
                 return
             elif tool_choice == "2":
                 return
+            else:
+                error()
+                event_tool_found()
 
 
 def event_locked_door():
-    pass
+    global door_unlocked, key_obtained
+    dashes()
+    if door_unlocked == False:
+        print("Before you is a metal door\nThe door has a simple lock")
+        if "key" in inventory:
+            while True:
+                use_key = input("Use key on the door\n1. Yes\n2. No")
+                if use_key == "1":
+                    print("The key opens the door")
+                    room_lab()
+                elif use_key == "2":
+                    room_nest()
+                else:
+                    error()
+        else:
+            print("maybe you could find a key to open the door in one of the other rooms")
+            
+    else:
+        room_lab()
 
-status()
+def room_lab():
+    pass
+    
+
+
+
+
+def ending_cave_1():
+    dashes()
+    print("You follow the path\nYou have no idea how long it has been but the sun is rising\n you see a town on the horizon\n")
+    while True:
+        var_32147836412 = input("Escape?\n1. Yes\n2. No\n>")
+        if var_32147836412 == "1":
+            print(" - "*17)
+            break
+        else:
+            half_dash()
+            print("You dont actually have a choice\n")
+
+    ending_dash()
+    print("                Ending obtained:                   ")
+    print("                     Escape\n                      ")
+    print("        You left the wretched cave behind          ")
+    print("           but is this really the end\n            ")
+    print("***************************************************")
+    ending()
+    print("\n"*5)
+
+def ending_cave_2():
+    dashes()
+    print("You left the path\nYou dont know how long ago that was\nYou hope you find civilization soon\n")
+    while True:
+        var_32147836412 = input("continue?\n1. Yes\n2. No\n>")
+        if var_32147836412 == "1":
+            print(" - "*17)
+            break
+        else:
+            print(" - "*17)
+            print("The illusion of choice")
+            break
+
+    ending_dash()
+    print("                Ending obtained:                   ")
+    print("                    Wanderer\n                      ")
+    print("       You will forever wander this forest          ")
+    print("         next time dont leave the path\n            ")
+    print("***************************************************")
+    ending()
+    print("\n"*5)
