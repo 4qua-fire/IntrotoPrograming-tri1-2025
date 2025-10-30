@@ -718,7 +718,7 @@ def room_nest():
 
 def event_tool_found():
     half_dash()
-    global current_location,nest_tool,dinner_tool
+    global current_location, nest_tool, dinner_tool, current_tool
     if current_location == "nest":
         print(f"You find the {nest_tool} in the nest")
         if current_tool != None:
