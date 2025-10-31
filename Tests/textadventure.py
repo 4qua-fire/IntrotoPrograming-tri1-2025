@@ -383,17 +383,12 @@ def death_ending(cause,text):
             half_dash()
             print("Rather than not typing 1\nyou can type 2 to end game")
     death_ending(death_cause, death_text)
-'''
-----the great divide------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----the great divide------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----the great divide------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-'''
 
 #more variables 
 dining_room_name = "front left room"
 nest_room_name = "right room"
-lab_room_name = "Hallway"
-oneway_room_name = "mysterious room"
+lab_room_name = "hallway"
+monster_name = "monster"
 
 max_health = 100
 current_health = 100
@@ -403,12 +398,15 @@ current_tool = None
 key_obtained = False
 boulders_destroyed = False
 door_unlocked = False
+slide_discovered = False
+button_pressed = False
 
 frog_count = 0
 frog_max = 5
 cool_frog = False
 magic_frog = False
 silly_frog = False
+camo_frog = False
 checked_for_frog = False
 
 nest_tool_located = False
@@ -516,7 +514,7 @@ def event_set_clock():
         event_set_clock()
 
 def text_cave_route_start():
-    global dining_room_name, nest_room_name, lab_room_name, oneway_room_name
+    global dining_room_name, nest_room_name, lab_room_name
     dashes()
     print("Gravel starts to fall as the room starts to shake\nThere is the sound of boulders falling in the main room\nA hole opens in the ceiling\nThe moon shines directly above\nyou leave the clock to go check out the main room\nMaybe you can set the time later")
     print("Boulders cover the entrance to the cave\nYou cannot leave without breaking them")
@@ -526,7 +524,6 @@ def text_cave_route_start():
     dining_room_name = "front left room"
     nest_room_name = "right room"
     lab_room_name = "mysterious room"
-    oneway_room_name = "mysterious room"
     room_main()
 
 def event_entrance():
@@ -890,7 +887,7 @@ def event_locked_door():
             while True:
                 use_key = input("Use key on the door\n1. Yes\n2. No")
                 if use_key == "1":
-                    print("The key opens the door")
+                    dashes()
                     room_lab()
                 elif use_key == "2":
                     room_nest()
@@ -900,13 +897,121 @@ def event_locked_door():
             print("maybe you could find a key to open the door in one of the other rooms")
             
     else:
+        dashes()
         room_lab()
 
 def room_lab():
-    pass
-    
+    global inventory, door_unlocked, current_location, lab_room_name, slide_discovered, button_pressed,monster_name, camo_frog, frog_count, frog_max
+    current_location = "lab"
+    if slide_discovered == False:
+        if door_unlocked == False:
+            print("The key opens the door")
+            print("the room behind the door seems to be some sort of lab\nThere are 3 large tubes with plaques at the bottom\nthere is a desk on the far end of the room\nThere are filing cabinets on the right side of the room")
+            lab_room_name = "Lab"
+            door_unlocked = True
+        else:
+            print("The lab remains\n3 tubes, 1 desk, filing cabinets")
+        lab_option = input(f"\nCurrent options:\n1. Investigate\n2. return to the {nest_room_name}\ncs. check status\n>")
+        if lab_option == "1":
+            half_dash()
+            while True:
+                investigate_option = input("\nInvestigate options:\n1. Filing cabinets\n2. Desk\n3. Tubes\n4. Cancel\n>")
+                half_dash
 
+                if investigate_option ==  "1":
+                    print("There are large amounts ouf finling cabinets")
+                    if button_pressed == False:
+                        print("The filing cabinets are filled with papers\nAn interesting paper says that:\n\"loot 002 to find somthing awesome")
+                    elif button_pressed == True:
+                        print("In the filing cabinets all you see is ash\n\nHowever\nAlso in the cabinets you find somthing peculiar\n\nYou find a spinning frog in a camouflage hat")
+                        camo_frog = True
+                        frog_count += 1
+                        print(f"Frogs found {frog_count}/{frog_max}")
+                    pause = input("\nEnter to continue>")
+                    break
 
+                elif investigate_option ==  "2":
+                    push = input("On the desk there is a single red button\nPush the button\n1. Yes\n2. No")
+                    if push == "1":
+                        if button_pressed == True:
+                            print("Nothing happened")
+                        else:
+                            print("you hear the sound of flames for a moment then it stops")
+                            button_pressed == True
+                        pause = input("\nEnter to continue>")
+                    break
+
+                elif investigate_option ==  "3":
+                    plaque =("As you walk to the tubes you notice there is some sort of slide on theright slide of the room\nThe Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
+                    slide_discovered = True
+                    if plaque == "1":
+                        print("the only plaque thati readable is the middle one\nIt says 002 Mackaye")
+                        monster_name = "002 Mackeye"
+                        pause = input("\nEnter to continue>")
+                    break
+                elif investigate_option ==  "4":
+                    break
+                else:
+                    error()
+            half_dash
+            room_lab()
+        elif lab_option == "2":
+            room_nest()
+        elif lab_option == "cs":
+            status()
+            room_lab
+    elif slide_discovered == True:
+        print("The lab remains\n3 tubes, 1 desk, filing cabinets, and a slide")
+        lab_option = input(f"\nCurrent options:\n1. Investigate\n2. return to the {nest_room_name}\n3. slide down the slide\ncs. check status\n>")
+        if lab_option == "1":
+            half_dash()
+            while True:
+                investigate_option = input("\nInvestigate options:\n1. Filing cabinets\n2. Desk\n3. Tubes\n4. Cancel\n>")
+                half_dash
+
+                if investigate_option ==  "1":
+                    print("There are large amounts ouf finling cabinets")
+                    if button_pressed == False:
+                        print("The filing cabinets are filled with papers\nAn interesting paper says that:\n\"loot 002 to find somthing awesome")
+                    elif button_pressed == True:
+                        print("In the filing cabinets all you see is ash\n\nHowever\nAlso in the cabinets you find somthing peculiar\n\nYou find a spinning frog in a camouflage hat")
+                        camo_frog = True
+                        frog_count += 1
+                        print(f"Frogs found {frog_count}/{frog_max}")
+                    pause = input("\nEnter to continue>")
+                    break
+
+                elif investigate_option ==  "2":
+                    push = input("On the desk there is a single red button\nPush the button\n1. Yes\n2. No")
+                    if push == "1":
+                        if button_pressed == True:
+                            print("Nothing happened")
+                        else:
+                            print("you hear the sound of flames for a moment then it stops")
+                            button_pressed == True
+                        pause = input("\nEnter to continue>")
+                    break
+
+                elif investigate_option ==  "3":
+                    plaque =("As you walk to the tubes you notice there is some sort of slide on theright slide of the room\nThe Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
+                    if plaque == "1":
+                        print("the only plaque thati readable is the middle one\nIt says 002 Mackaye")
+                        monster_name = "002 Mackeye"
+                        pause = input("\nEnter to continue>")
+                    break
+                elif investigate_option ==  "4":
+                    break
+                else:
+                    error()
+            half_dash
+            room_lab()
+        elif lab_option == "2":
+            room_nest()
+        elif lab_option =="3":
+            pass
+        elif lab_option == "cs":
+            status()
+            room_lab
 
 
 def ending_cave_1():
