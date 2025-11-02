@@ -400,6 +400,8 @@ boulders_destroyed = False
 door_unlocked = False
 slide_discovered = False
 button_pressed = False
+boss_activated = False
+clock_spinning = True
 
 frog_count = 0
 frog_max = 5
@@ -415,8 +417,13 @@ current_location = None
 dinner_tool = "axe"
 nest_tool = "pickaxe"
 
+monster_health = 250
+monster_defense = 1
 
-
+dodge_cooldown = 0
+dodge_active = 0
+block_cooldown = 0
+block_active = 0
 
 
 
@@ -463,8 +470,8 @@ def text_cave_lookaround():
         text_cave_lookaround()
 
 def event_small_room():
-    global inventory
-    print("There  are few features in the small room\nA large carpet in the center of the circular room\nFour empty large bookcases along the walls\nA desk with a clock on the wall above it")
+    global inventory, key_obtained
+    print("There  are few features in the small room\nA large carpet in the center of the circular room\nFour empty large bookcases along the walls\nA desk with a clock on the wall above it\n")
     investigate_choice = input("Current options\n1. Investigate Carpet\n2. Investigate bookcases\n3. Investigate desk\n4. Investigate clock\n5. Return to the main room\n>")
     
     if investigate_choice == "1":
@@ -593,9 +600,9 @@ def room_main():
 
 
 def room_clock():
-    global current_location, inventory, magic_frog, frog_count, frog_max
+    global current_location, inventory, magic_frog, frog_count, frog_max, boss_activated,clock_spinning, key_obtained
     current_location = "clock room"
-    if True:
+    if boss_activated == False or clock_spinning == False:
         print("The clock, carpet, desk, and bookshelves remain")
         clock_choice = input("\nCurrent Options:\n1. Investigate \n2. Set the time\n3. Return to the main room\ncs. Check status\n>")
 
@@ -656,6 +663,38 @@ def room_clock():
         else:
             error()
             room_clock()
+    elif boss_activated == True:
+        if clock_spinning == True:
+            print("The clock sits spinning rapidly on the wall\nEverytime the clock reaches 12:00 a loud bell rings out")
+        else:
+            print("The clock on the the wall shows 12:00")
+        
+        while True:
+            set_clock = input("\nSet the clock\n1. Yes\n2. No\n>")
+            
+            if set_clock == "1":
+                print("You stop the cock and set it to 12:00")
+                clock_spinning = False
+                save()
+                break
+            
+            elif set_clock == "2":
+                while True:
+                    clock_to_main = input("Return to the main room\n1. Yes\n2. No\n>")
+                    if clock_to_main == "1":
+                        room_main()
+                    elif clock_to_main == "2":
+                        half_dash()
+                        break
+                    else:
+                        error()
+       
+            else:
+                error()
+
+        half_dash()
+        room_clock()
+
 
 def room_dinner():
     global inventory, dining_room_name, current_tool, current_location, checked_for_frog, frog_count, frog_max, silly_frog
@@ -751,9 +790,9 @@ def room_dinner():
             room_clock()
 
 def room_nest():
-    global inventory, nest_room_name, current_location, nest_tool_located,frog_count, frog_max, cool_frog
+    global inventory, nest_room_name, current_location, nest_tool_located,frog_count, frog_max, cool_frog, boss_activated
     current_location = "nest"
-    if True:
+    if boss_activated == False:
         print(f"you are in the {nest_room_name}")
         if nest_room_name == "right room":
             print("The right room is a large room\nThe floor is dirt rather than stone\nIt looks vaguely like a bids nest there are branches around the entire perimeter\nThere is a hall to the right")
@@ -790,6 +829,9 @@ def room_nest():
         else:
             error()
             room_nest()
+    elif boss_activated == True:
+        print("In the nest before you stands a tall huminoid figure on 4 legs\nthe way back to the main room is blocked\nYOur onl choice is to fight")
+        boss_fight()
 
 
 def event_tool_found():
@@ -837,7 +879,7 @@ def event_tool_found():
                 event_tool_found()
             
     if current_location == "dinner":
-        print(f"You find the {dinner_tool} in the nest")
+        print(f"You find the {dinner_tool} hanging on the wall")
         if current_tool != None:
             print("You cannot store both tools")
             tool_choice = input(f"swap the {current_tool} for the {dinner_tool}\n1. Yes\n2. No\n>")
@@ -885,7 +927,7 @@ def event_locked_door():
         print("Before you is a metal door\nThe door has a simple lock")
         if "key" in inventory:
             while True:
-                use_key = input("Use key on the door\n1. Yes\n2. No")
+                use_key = input("Use key on the door\n1. Yes\n2. No\n>")
                 if use_key == "1":
                     dashes()
                     room_lab()
@@ -916,12 +958,12 @@ def room_lab():
             half_dash()
             while True:
                 investigate_option = input("\nInvestigate options:\n1. Filing cabinets\n2. Desk\n3. Tubes\n4. Cancel\n>")
-                half_dash
+                half_dash()
 
                 if investigate_option ==  "1":
-                    print("There are large amounts ouf finling cabinets")
+                    print("There are large amounts ouf filing cabinets")
                     if button_pressed == False:
-                        print("The filing cabinets are filled with papers\nAn interesting paper says that:\n\"loot 002 to find somthing awesome")
+                        print("The filing cabinets are filled with papers\nAn interesting paper says that:\n\"loot 002 to find somthing awesome\"")
                     elif button_pressed == True:
                         print("In the filing cabinets all you see is ash\n\nHowever\nAlso in the cabinets you find somthing peculiar\n\nYou find a spinning frog in a camouflage hat")
                         camo_frog = True
@@ -931,29 +973,29 @@ def room_lab():
                     break
 
                 elif investigate_option ==  "2":
-                    push = input("On the desk there is a single red button\nPush the button\n1. Yes\n2. No")
+                    push = input("On the desk there is a single red button\nPush the button\n1. Yes\n2. No\n>")
                     if push == "1":
                         if button_pressed == True:
                             print("Nothing happened")
                         else:
                             print("you hear the sound of flames for a moment then it stops")
-                            button_pressed == True
+                            button_pressed = True
                         pause = input("\nEnter to continue>")
                     break
 
                 elif investigate_option ==  "3":
-                    plaque =("As you walk to the tubes you notice there is some sort of slide on theright slide of the room\nThe Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
+                    plaque =("As you walk to the tubes you notice there is some sort of slide on the right slide of the room\nThe Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
                     slide_discovered = True
                     if plaque == "1":
-                        print("the only plaque thati readable is the middle one\nIt says 002 Mackaye")
-                        monster_name = "002 Mackeye"
+                        print("the only plaque that is readable is the middle one\nIt says 002 Simon")
+                        monster_name = "002 Simon"
                         pause = input("\nEnter to continue>")
                     break
                 elif investigate_option ==  "4":
                     break
                 else:
                     error()
-            half_dash
+            half_dash()
             room_lab()
         elif lab_option == "2":
             room_nest()
@@ -967,10 +1009,10 @@ def room_lab():
             half_dash()
             while True:
                 investigate_option = input("\nInvestigate options:\n1. Filing cabinets\n2. Desk\n3. Tubes\n4. Cancel\n>")
-                half_dash
+                half_dash()
 
                 if investigate_option ==  "1":
-                    print("There are large amounts ouf finling cabinets")
+                    print("There are large amounts ouf filing cabinets")
                     if button_pressed == False:
                         print("The filing cabinets are filled with papers\nAn interesting paper says that:\n\"loot 002 to find somthing awesome")
                     elif button_pressed == True:
@@ -988,31 +1030,39 @@ def room_lab():
                             print("Nothing happened")
                         else:
                             print("you hear the sound of flames for a moment then it stops")
-                            button_pressed == True
+                            button_pressed = True
                         pause = input("\nEnter to continue>")
                     break
 
                 elif investigate_option ==  "3":
-                    plaque =("As you walk to the tubes you notice there is some sort of slide on theright slide of the room\nThe Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
+                    plaque =("The Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
                     if plaque == "1":
-                        print("the only plaque thati readable is the middle one\nIt says 002 Mackaye")
-                        monster_name = "002 Mackeye"
+                        print("the only plaque that is readable is the middle one\nIt says 002 Simon")
+                        monster_name = "002 Simon"
                         pause = input("\nEnter to continue>")
                     break
                 elif investigate_option ==  "4":
                     break
                 else:
                     error()
-            half_dash
+            half_dash()
             room_lab()
         elif lab_option == "2":
             room_nest()
         elif lab_option =="3":
-            pass
+            event_slide()
         elif lab_option == "cs":
             status()
             room_lab
 
+def event_slide():
+    global boss_activated
+    dashes()
+    print(f"You slide down thr slide\nA terrifing screech rings out from behind you coming from the lab\nThe slide leads to the main room\tThe screech echos from the no longer accecable slide and the {nest_room_name}\nThe clock in the clock room begins to ring loudly")
+    boss_activated = True
+    pause = input("\nEnter to continue>")
+    dashes()
+    room_main()
 
 def ending_cave_1():
     dashes()
@@ -1056,3 +1106,122 @@ def ending_cave_2():
     print("***************************************************")
     ending()
     print("\n"*5)
+
+
+#boss code
+def tool_damage_calculator():
+    global current_tool
+    if current_tool == None:
+        return 10
+    elif current_tool == "pickaxe":
+        return 15
+    elif current_tool == "axe":
+        return 25
+    
+def boss_status():
+    global current_health, max_health, monster_health
+    dashes()
+    print(f"{monster_name}")
+    print(f"{monster_health}/250")
+    print(" - "*17)
+    print(f"Health: {current_health}/{max_health}")
+    print(f"Weapon: {current_tool}")
+    print(" - "*17)
+
+def cooldown_error(): print("Error: Cannot use skill while on cooldown"); print(" - "*17) ;player_turn()
+
+def player_turn():
+    global current_tool, dodge_cooldown
+    print("Actions:")
+    print( (f"1. Hit with {f'{current_tool}' if current_tool != None else 'nothing'} and prepare to dodge" if dodge_cooldown <= 0 else f"Dodge on cooldown: active for {dodge_active} turns   cooldown remaining: {dodge_cooldown} turns") )
+    print( (f"2. Hit with {f'{current_tool}' if current_tool != None else 'nothing'} and prepare to block" if block_cooldown <= 0 else f"block on cooldown: active for {block_active} turns   cooldown remaining: {block_cooldown} turns") )
+    print(f"3. Just attack with {f'{current_tool}' if current_tool != None else 'nothing'}")
+    action = input("\n>")
+    if action == "1":
+        if dodge_cooldown >0: cooldown_error(); player_turn()
+        else: attack(); dodge(); print("- - "*13)
+    elif action == "2":
+        if block_cooldown >0: cooldown_error(); player_turn()
+        else: attack(); block(); print("- - "*13)
+    elif action == "3": attack(); print("- - "*13)
+    else: error(); player_turn()
+
+def attack():
+    global damage, monster_health, monster_name, monster_defense
+    hit_damage = (random.randint(-5,5)+damage)//monster_defense
+    print(f"You hit {monster_name} for {hit_damage} damage")
+    monster_health -= hit_damage
+
+def dodge():
+    global dodge_cooldown, dodge_active
+    dodge_cooldown = 5
+    dodge_active = 3
+    print("You got ready to dodge (Increased chance to dodge enemy attacks next 3 turns)")
+    pass
+
+def block():
+    global block_cooldown, block_active
+    block_cooldown = 3
+    block_active = 1
+    print("You got ready to block (Take no damage next turn)")
+
+
+def monster_turn():
+    global monster_defense
+    monster_defense = 1
+    monster_action = random.randint(0,(1 if monster_health < 125 else 0))
+    if monster_action == 0:
+        monster_attack()
+    elif monster_action == 1:
+        print("The monster readies itself for an attack")
+        monster_defense = 2
+
+def monster_attack():
+    global current_health, dodge_active, block_active, monster_name, monster_health, damage
+    hit_damage = (10+random.randint(-5,5))
+    if block_active:
+        print(f"{monster_name} attempts to stike\nYou manage to block it")
+        if random.randint(0,1): 
+            parry_damage = (random.randint(-5,5)+damage)
+            print(f"In addition you parry dealing {parry_damage} damage")
+            monster_health -= parry_damage
+    elif random.randint(-3,dodge_active*2) >= 0:
+        print(f"{monster_name} attempts to strike\nYou managed to dodge in time")
+    else:
+        print(f"{monster_name} manages to strike you dealing {hit_damage} damage")
+        current_health -= hit_damage
+
+
+
+
+def turn_complete():
+    global dodge_active, dodge_cooldown, block_active, block_cooldown
+    if dodge_active > 0:
+        dodge_active -= 1
+    if dodge_cooldown > 0:
+        dodge_cooldown -= 1
+    if block_active > 0:
+        block_active -= 1
+    elif block_cooldown > 0:
+        block_cooldown -= 1
+
+def boss_fight():
+    global damage, monster_health, monster_name, current_health
+    damage = tool_damage_calculator()
+    while monster_health > 0 and current_health >0:
+        input("Enter to continue>")
+        boss_status()
+        if random.randint(1,2) == 1: print("Your turn"); player_turn()
+        else: print(f"{monster_name}'s turn"); monster_turn()
+        turn_complete()
+    if current_health <=0:
+        print("death")
+        load()
+    elif monster_health <= 0:
+        print("victory")
+        event_victory_nest()
+
+def event_victory_nest():
+    pass
+    
+event_cave()
