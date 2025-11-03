@@ -638,17 +638,16 @@ def event_escape():
         print("You sucessfully manage to destroy the boulders ")
         boulders_destroyed = True
     print("You are at the entrance to the cave\nThe cave leads directly to a strait path\nThe trees are symetric on either side of the path")
-    if frog_count/frog_max != 1:
-        escape_option = input("Current options:\n1. Follow the path\n2. Go into the woods\n3. return to the cave")
-        if escape_option == "1":
-            ending_cave_1
-        if escape_option == "2":
-            ending_cave_2
-        if escape_option == "3":
-            room_main()
-        else:
-            error()
-            event_escape()
+    escape_option = input("Current options:\n1. Follow the path\n2. Go into the woods\n3. return to the cave")
+    if escape_option == "1":
+        ending_cave_1()
+    elif escape_option == "2":
+        ending_cave_2()
+    elif escape_option == "3":
+        room_main()
+    else:
+        error()
+        event_escape()
 
 def room_main():
     global current_location
@@ -902,7 +901,7 @@ def room_nest():
             error()
             room_nest()
     elif boss_activated == True:
-        print("In the nest before you stands a tall huminoid figure on 4 legs\nthe way back to the main room is blocked\nYOur onl choice is to fight")
+        print("In the nest before you stands a tall humanoid figure on 4 legs\nthe way back to the main room is blocked\nYour only choice is to fight")
         boss_fight()
 def room_lab():
     global inventory, door_unlocked, current_location, lab_room_name, slide_discovered, button_pressed,monster_name, camo_frog, frog_count, frog_max
@@ -946,7 +945,7 @@ def room_lab():
                     break
 
                 elif investigate_option ==  "3":
-                    plaque =("As you walk to the tubes you notice there is some sort of slide on the right slide of the room\nThe Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
+                    plaque =input("As you walk to the tubes you notice there is some sort of slide on the right slide of the room\nThe Three large tubes each have a plaque near the bottom\nThe 2 tubes on the end have a stagnant liquid inside but the middle one is brooken opend and empty\n\nlook at the plaques\n1. Yes\n2. No")
                     slide_discovered = True
                     if plaque == "1":
                         print("the only plaque that is readable is the middle one\nIt says 002 Simon")
@@ -1119,8 +1118,8 @@ def boss_fight():
         event_victory_nest()
 def event_victory_nest():
     global frog_count, frog_max, peculiar_frog
-    print("The monster remains dead on the ground\n The path to the lab has collapsed")
-    loot = input("\nCurrent option:\n1. return to the main room\ncs. Check status")
+    print("The monster remains dead on the ground\nThe path to the lab has collapsed")
+    loot = input("\nCurrent option:\n1. return to the main room\ncs. Check status\n>")
     if loot == "1":
         dashes()
         event_victory_main_room()
