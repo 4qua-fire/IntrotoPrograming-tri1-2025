@@ -26,6 +26,8 @@ def menu():
     start_game =input("1. start Game\n2. exit game\n>")
     if start_game == "1":
         startup()
+    elif start_game == "2":
+        sys.exit("see you later")
     else:
         print("I assume you want to exit")
         sys.exit("see you later")
@@ -191,18 +193,21 @@ def event_small_room():
             inventory.add("key")
         else:
             print("there is nothing new")
+        pause = input("\nEnter to continue>")
         half_dash()
         event_small_room()
     
     elif investigate_choice == "2":
         half_dash()
         print("The forth bookshelf to the right of the desk was stuck and could not move\nNo mater what you do you could not move it\nAll bookshelves are empty\nTHe other bookshelves have nothing behind them.")
+        pause = input("\nEnter to continue>")
         half_dash()
         event_small_room()
 
     elif investigate_choice == "3":
         half_dash()
         print("You take a look at the desk\nThere is nothing on top or within its two drawers")
+        pause = input("\nEnter to continue>")
         half_dash()
         event_small_room()
     
@@ -218,7 +223,7 @@ def event_small_room():
 def event_set_clock():
     dashes()
     print("You take a look at the clock\nIts hands are loose\nYou could probably fix it")
-    time = input("Fix clock?\n1. Yes\n2. No\n>")
+    time = input("\nFix clock?\n1. Yes\n2. No\n>")
     if time == "1":
         save()
         text_cave_route_start()
@@ -281,7 +286,7 @@ def event_moon():
     if moon_path == "2":
         event_chill()
     if moon_path == "3":       #secret option
-        print("death")
+        ending_death("unknown","dont wander into forests next time")
     else:
         error()
         event_moon()
@@ -731,6 +736,7 @@ def room_clock():
 
         else:
             error()
+            half_dash()
             room_clock()
     elif boss_activated == True:
         if clock_spinning == True:
@@ -1180,6 +1186,8 @@ def ending():
     restart = input("Play Again?\n1. yes\n2. no\n3. return to menu\n>")
     if restart == "1":
         startup()
+    elif restart == "2":
+        sys.exit("see you later")        
     elif restart == "3":
         menu()
     else:
