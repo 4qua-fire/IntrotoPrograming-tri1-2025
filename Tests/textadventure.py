@@ -8,12 +8,14 @@ def dashes():
     dash_count += 1
     print(f"\n{dash_count}{'-'*51}")
     if dash_count > 488: 
+        dash_count = 0
         ending_secret()
 def half_dash():
     global dash_count
     dash_count += 1
     print(f"\n{dash_count}{' - '*17}")
     if dash_count > 488:
+        dash_count = 0
         ending_secret()
 def error():
     print("Error: not an option\nPlease type the value of the choice you would like")
@@ -874,8 +876,8 @@ def room_nest():
         nest_choice = input(f"\nCurrent options:\n1. Search the nest\n2. Return to the main room\n3. go to the {lab_room_name}\ncs. Check status\n>")
         half_dash()
         if nest_choice == "1":
-            next_finding = random.randint(1,20)
-            if next_finding >= 19 and cool_frog == False:
+            nest_finding = random.randint(1,20)
+            if nest_finding >= 19 and cool_frog == False:
                 
                 print("In the sticks you find something magical\n\nYou find a spinning frog in a cool hat")
                 cool_frog = True
@@ -883,7 +885,7 @@ def room_nest():
                 print(f"Frogs found {frog_count}/{frog_max}")
                
                 pause = input("\nEnter to continue>")
-            if (next_finding >= 12 or nest_tool_located) and nest_tool != None:
+            if nest_finding >= 12 or nest_tool != None:
                 nest_tool_located = True
                 event_tool_found()
             else:
