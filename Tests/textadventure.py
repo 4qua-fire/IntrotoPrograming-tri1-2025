@@ -1,28 +1,86 @@
-#imports
+#Imports
 import sys
 import random
-#variables
-var_loop_count =0
-chase_monster = False
-small_unlocked = False
-dash_count =0
-#repeated functions
+
+#Repeated functions
 def dashes():
-	global dash_count
-	dash_count += 1
-	print(f"\n{dash_count}{'-'*51}")
+    global dash_count
+    dash_count += 1
+    print(f"\n{dash_count}{'-'*51}")
+    if dash_count > 488: 
+        ending_secret()
 def half_dash():
-	global dash_count
-	dash_count += 1
-	print(f"\n{dash_count}{' - '*17}")
+    global dash_count
+    dash_count += 1
+    print(f"\n{dash_count}{' - '*17}")
+    if dash_count > 488:
+        ending_secret()
 def error():
     print("Error: not an option\nPlease type the value of the choice you would like")
-def ending_dash():
-    print("\n"*5)
-    print("*"*51)
-    print("***************************************************\n")
 
-#start functions
+
+#Starting functions
+def menu():
+    print(("-"*51+"\n")*5)
+    print("welcome to super good text adventure(temporary name)")
+    start_game =input("1. start Game\n2. exit game\n>")
+    if start_game == "1":
+        startup()
+    else:
+        print("I assume you want to exit")
+        sys.exit("see you later")
+def startup():
+    global var_loop_count, chase_monster, small_unlocked, dash_count, dining_room_name, nest_room_name, lab_room_name, monster_name , max_health, current_health, inventory, current_tool, key_obtained, boulders_destroyed, door_unlocked, slide_discovered, button_pressed, boss_activated, clock_spinning, frog_count, frog_max, cool_frog, magic_frog, silly_frog, camo_frog, peculiar_frog, checked_for_frog, nest_tool_located, current_location, dinner_tool, nest_tool, monster_health, monster_defense, dodge_cooldown, dodge_active, block_cooldown, block_active
+    var_loop_count =0
+    chase_monster = False
+    small_unlocked = False
+    dash_count =0
+
+    dining_room_name = "front left room"
+    nest_room_name = "right room"
+    lab_room_name = "hallway"
+    monster_name = "monster"
+
+    max_health = 100
+    current_health = 100
+    inventory = set()
+    current_tool = None
+
+    key_obtained = False
+    boulders_destroyed = False
+    door_unlocked = False
+    slide_discovered = False
+    button_pressed = False
+    boss_activated = False
+    clock_spinning = True
+
+    frog_count = 0
+    frog_max = 5
+    cool_frog = False
+    magic_frog = False
+    silly_frog = False
+    camo_frog = False
+    peculiar_frog = False
+    checked_for_frog = False
+
+    current_location = None
+    dinner_tool = "axe"
+    nest_tool = "pickaxe"
+
+    monster_health = 250
+    monster_defense = 1
+
+    dodge_cooldown = 0
+    dodge_active = 0
+    block_cooldown = 0
+    block_active = 0
+
+    print("-"*51)
+    print("\n"*20)
+    event_cave()
+
+
+#Route choice functions
 def event_cave():
     global var_loop_count, chase_monster, small_unlocked
     dashes()
@@ -51,29 +109,10 @@ def event_cave():
         elif exit == "2":
             event_leave()
         elif exit == "wake up":      #secret option
-                death_ending("Waking up", "You shouldn't slam your head into rocks\nThat won't help you escape")
+                ending_death("Waking up", "You shouldn't slam your head into rocks\nThat won't help you escape")
         else:
             error()
             event_cave()
-
-def event_stay():
-    dashes()
-    print("You decided you will stay in the cave")
-    stay = input("\nCurrent Options:\n1. Look around the cave\n2. Leave the cave\n>")
-    if stay == "1":
-        event_cave_lookaround()
-    elif stay == "2":
-        event_leave()
-    else:
-        error()
-        event_stay()
-
-
-
-
-
-
-#path 1 functions
 def event_leave():
     dashes()
     print("You left the cave\nYou now see that you are in a clearing in a forest")
@@ -87,7 +126,6 @@ def event_leave():
     else:
         error()
         event_leave()
-
 def text_investigate_trees():
     half_dash()
     print("There is somthing off about the trees\nAll of the trees are the exact same\nNot just the trees but the scenery behind them too")
@@ -100,346 +138,18 @@ def text_investigate_trees():
         error()
         text_investigate_trees()
 
-def event_strait_path():
+
+def event_stay():
     dashes()
-    print("Ahead of you the path seems to continue endlessly\nThe trees mirror eachother on both sides\nYou hear the sound of trees break behind you")
-    path = input("\nCurrent Options:\n1. Continue onward\n2. turn around\n3. leave path\n>")
-    if path == "1":
-        event_loop()
-    elif path == "2": 
-        text_strait_turnaround()
-    elif path == "3":
-        event_moon()
+    print("You decided you will stay in the cave")
+    stay = input("\nCurrent Options:\n1. Look around the cave\n2. Leave the cave\n>")
+    if stay == "1":
+        event_cave_lookaround()
+    elif stay == "2":
+        event_leave()
     else:
         error()
-        event_strait_path()
-
-def text_strait_turnaround():
-    half_dash()
-    print("Turning, around you see that the trees behind you have all fallen down\nYou have no way back")
-    if input("1. turn around\n>") == "1":
-        event_strait_path()
-    else:
-        error()
-        event_strait_path()
-
-def event_loop():
-    global var_loop_count
-    dashes()
-    print("The path seems to strech endlessly")
-    loop_path = input("\nCurrent Options:\n1. Continue forward\n2. Turn around\n3. Leave path\n>")
-    if loop_path == "1":
-        var_loop_count+= 1
-        event_loop()
-    elif loop_path == "2":
-        var_loop_count += 1
-        event_loop()
-    elif loop_path == "3":
-        event_moon()
-    else:
-        error()
-        event_loop()
-
-def event_moon():
-    dashes()
-    print("The moon shines brightly through the trees\nFollowing the path of least resistance you find yourself at a juction")
-    moon_path = input("\nCurrent Options:\n1. take the left path\n2. take the right path\n>")
-    if moon_path == "1":
-        dashes()
-        print("RESPAWN ACTIVATED")
-        print(" - "*17)
-        event_chase()
-    if moon_path == "2":
-        event_chill()
-    if moon_path == "3":       #secret option
-        print("death")
-    else:
-        error()
-        event_moon()
-
-    
-def event_chase():
-    print("it seems left was the wrong choice\ntowering over you is a face with yellow eyes and teeth")
-    global chase_monster
-    chase_monster = True
-    chase_action = input("what are you going to do\n>")
-
-    if len(chase_action) > 10:
-        half_dash()
-        print("You were to slow to react\nBefore you knew it everything went black\n\n[Hint: Try entering a shorter message]\n")
-        while True:
-            half_dash()
-            replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
-            if replay == "1":
-                dashes()
-                event_chase()
-            elif replay == "2":
-                print("\n"*10)
-                event_cave()
-            else:
-                error()
-   
-    elif "run" in chase_action or "flee" in chase_action or "bolt" in chase_action:
-        event_chase_run()
-    
-    elif "fight" in chase_action or "attack" in chase_action:
-        half_dash()
-        print("You attempt to fight the monster\nYou did well considering you were empty handed\nHowever it was all for naught\nBefore all fades to black you hear the beast release a wretched scream and thump onto the earth")
-        while True:
-            half_dash()
-            replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
-            if replay == "1":
-                dashes()
-                event_chase()
-            elif replay == "2":
-                print("\n"*10)
-                event_cave()   
-            else:
-                error()
-
-    else:
-        half_dash()
-        print("In fear of the monster you couldn't think clearly and it killed you\n\n[Hint: Try entering a simple and relevant action]\n")
-        while True:
-            half_dash()
-            replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
-            if replay == "1":
-                dashes()
-                event_chase()
-            elif replay == "2":
-                print("\n"*10)
-                event_cave()
-            else:
-                error()
-   
-def event_chase_run():
-    if var_loop_count > 15:
-        death_ending("exaustion", "maybe dont walk so much before needing to run from a monster") 
-    else:
-        dashes()
-        print("you run away from the monster\n after some running you approch an intersection")
-        runaway_path = input("Current options\n1. Run to the left\n2. Run to the right\n>")
-        if runaway_path == "1":
-            event_chill()
-        elif runaway_path == "2":
-            half_dash()
-            print("you ran to the right forgetting that that was the route you came from\nYou reach the strait path and continue to run\nThe moment you start to slow it seems the monster is immediatly behind you\nEvery thing fades to black")
-            while True:
-                half_dash()
-                replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
-                if replay == "1":
-                    dashes()
-                    event_chase()
-                elif replay == "2":
-                    print("\n"*10)
-                    event_cave()
-                else:
-                    error()
-
-def event_chill():
-    dashes()
-    if chase_monster:
-        print("the danger has passed\nBehind you the monster continues running down the other path\nIts shreiks gradually fading behind you")
-        half_dash()
-    print("It is getting cold now\nA mist forms with each breath")
-    chill_action = input("\nCurrent Options:\n1. Continue onward\n2. attempt to find warmth\n>")
-    if chill_action == "1":
-        ending_forest_1()
-    elif chill_action == "2":
-        event_warmth()
-    else:
-        error()
-        event_chill()
-
-def event_warmth():
-    dashes()
-    print("You manage to find a blanket\nIt has gotten colder but maybe it would allow you to get some rest")
-    warmth_action = input("\nCurrent Options:\n1. Take a rest\n2. Continue onward\n>")
-    if warmth_action == "1":
-        ending_forest_2()
-    elif warmth_action == "2":
-        if chase_monster:
-            ending_forest_3()
-        else:    
-            ending_forest_2()
-    else:
-        error()
-        event_warmth()    
-
-def ending_forest_1():
-    dashes()
-    print("You find yourself in a small town\nYour town\nOn your doorstep your parents stand there expectantly\n")
-    while True:
-        var_32147836412 = input("Go Home?\n1. Yes\n2. No\n>")
-        if var_32147836412 == "1":
-            print(" - "*17)
-            break
-        else:
-            half_dash()
-            print("Take your time\nEnter 1 when ready\n")
-
-
-    ending_dash()
-    print("                Ending obtained:                   ")
-    print("                     Home\n                        ")
-    print("            You found your way home                ")
-    print("      or.. at least you think you're home.\n        ")
-    print("***************************************************")
-    ending()
-    print("\n"*5)
-
-def ending_forest_2():
-    dashes()
-    print("You find yourself in a small town\nYour town\nNobody is here but you're to tired to care\nYou head strait to your bed\n")
-    while True:
-        var_32147836412 = input("Go to sleep?\n1. Yes\n2. No\n>")
-        if var_32147836412 == "1":
-            print(" - "*17)
-            break
-        else:
-            half_dash()
-            print("Take your time\nEnter 1 when ready\n")
-
-
-    ending_dash()
-    print("                Ending obtained:                   ")
-    print("                    Alone\n                        ")
-    print("         time for some well needed rest            ")
-    print("    maybe tomorrow you'll look for your family.     ")
-    print("***************************************************")
-    print("\n"*5)
-    ending()
-
-def ending_forest_3():
-    dashes()
-    print("You find yourself in a small town\nYour town\nthe corpes of everyone you knew lay everywhere\nno doubt the monster's fault\nYou dont think you can handle this anymore\n")
-    while True:
-        var_32147836412 = input("wake up?\n1. Yes\n2. No\n>")
-        if var_32147836412 == "1":
-            print(" - "*17)
-            break
-        else:
-            dashes()
-            print("You head strait to your bed\n")
-            while True:
-                var_32147836412 = input("Go to sleep?\n1. Yes\n2. No\n>")
-                if var_32147836412 == "1":
-                    print(" - "*17)
-                    break
-                else:
-                    half_dash()
-                    print("Take your time\nEnter 1 when ready\n")
-
-
-            ending_dash()
-            print("                Ending obtained:                   ")
-            print("                    Alone\n                        ")
-            print("         time for some well needed rest            ")
-            print("    maybe tomorrow you'll look for your family.     ")
-            print("***************************************************")
-            print("\n"*5)
-            ending()
-
-    ending_dash()
-    print("this is the end then                               ")
-    print("                  you slam you head into a rock    ")
-    print("maybe that will stop this                          ")
-    print("   maybe this nightmare will end.                 \n")
-    print("                 Dream No More                     ")
-    print("                Ending obtained\n                  ")
-    print("***************************************************")
-    print("\n"*5)
-    ending()
-
-def ending():
-    pause = input("\nEnter to continue>")
-    dashes()
-    print("YOU WIN (kinda)\nthanks for playing\n")
-    restart = input("Play Again?\n1. yes\n2. no\n>")
-    if restart == "1":
-        print("\n"*20)
-        event_cave()
-    else:
-        print("i'll take that as a no")
-        sys.exit("see you later")
-
-def death_ending(cause,text):
-    ending_dash()
-    print(f"You died")
-    print(f"cause of death:")
-    print(cause)
-    print(text)
-    print("***************************************************")
-    print("\n"*5)
-    dashes()
-    while True:
-        restart = input("Type 1 to restart\n>")
-        if restart == "1":
-            print("\n"*20)
-            event_cave()
-        if restart == "2":
-            sys.exit("see you later")
-        else:
-            half_dash()
-            print("Rather than not typing 1\nyou can type 2 to end game")
-    death_ending(death_cause, death_text)
-
-#more variables 
-dining_room_name = "front left room"
-nest_room_name = "right room"
-lab_room_name = "hallway"
-monster_name = "monster"
-
-max_health = 100
-current_health = 100
-inventory = set()
-current_tool = None
-
-key_obtained = False
-boulders_destroyed = False
-door_unlocked = False
-slide_discovered = False
-button_pressed = False
-boss_activated = False
-clock_spinning = True
-
-frog_count = 0
-frog_max = 5
-cool_frog = False
-magic_frog = False
-silly_frog = False
-camo_frog = False
-checked_for_frog = False
-
-nest_tool_located = False
-
-current_location = None
-dinner_tool = "axe"
-nest_tool = "pickaxe"
-
-monster_health = 250
-monster_defense = 1
-
-dodge_cooldown = 0
-dodge_active = 0
-block_cooldown = 0
-block_active = 0
-
-
-
-def status():
-    half_dash()
-    print(f"Frogs found {frog_count}/{frog_max}")
-    print(f"Health: {current_health}/{max_health}")
-    print(f"Inventory:\n{ "-Inventory empty" if inventory == [] else " -".join(inventory)}")
-    pause = input("\nEnter to return>")
-    print(" - "*17)
-
-def save():
-    pass
-def load():
-    pass
-
+        event_stay()
 def event_cave_lookaround():
     global small_unlocked
     small_unlocked = True
@@ -455,7 +165,6 @@ def event_cave_lookaround():
     else:
         error()
         event_cave_lookaround()
-
 def text_cave_lookaround():
     half_dash()
     print("The walls are not very stable\nIt seems they could fall at any moment")
@@ -468,7 +177,6 @@ def text_cave_lookaround():
     else:
         error()
         text_cave_lookaround()
-
 def event_small_room():
     global inventory, key_obtained
     print("There  are few features in the small room\nA large carpet in the center of the circular room\nFour empty large bookcases along the walls\nA desk with a clock on the wall above it\n")
@@ -507,7 +215,6 @@ def event_small_room():
     else:
         error()
         event_small_room()
-
 def event_set_clock():
     dashes()
     print("You take a look at the clock\nIts hands are loose\nYou could probably fix it")
@@ -519,6 +226,260 @@ def event_set_clock():
         event_small_room()
     else:
         event_set_clock()
+
+
+#Forest route
+def event_strait_path():
+    dashes()
+    print("Ahead of you the path seems to continue endlessly\nThe trees mirror eachother on both sides\nYou hear the sound of trees break behind you")
+    path = input("\nCurrent Options:\n1. Continue onward\n2. turn around\n3. leave path\n>")
+    if path == "1":
+        event_loop()
+    elif path == "2": 
+        text_strait_turnaround()
+    elif path == "3":
+        event_moon()
+    else:
+        error()
+        event_strait_path()
+def text_strait_turnaround():
+    half_dash()
+    print("Turning, around you see that the trees behind you have all fallen down\nYou have no way back")
+    if input("1. turn around\n>") == "1":
+        event_strait_path()
+    else:
+        error()
+        event_strait_path()
+def event_loop():
+    global var_loop_count
+    if var_loop_count > 300:
+        ending_secret()
+    else:    
+        dashes()
+        print("The path seems to strech endlessly")
+        loop_path = input("\nCurrent Options:\n1. Continue forward\n2. Turn around\n3. Leave path\n>")
+        if loop_path == "1":
+            var_loop_count+= 1
+            event_loop()
+        elif loop_path == "2":
+            var_loop_count += 1
+            event_loop()
+        elif loop_path == "3":
+            event_moon()
+        else:
+            error()
+            event_loop()
+def event_moon():
+    dashes()
+    print("The moon shines brightly through the trees\nFollowing the path of least resistance you find yourself at a juction")
+    moon_path = input("\nCurrent Options:\n1. take the left path\n2. take the right path\n>")
+    if moon_path == "1":
+        dashes()
+        print("RESPAWN ACTIVATED")
+        print(" - "*17)
+        event_chase()
+    if moon_path == "2":
+        event_chill()
+    if moon_path == "3":       #secret option
+        print("death")
+    else:
+        error()
+        event_moon()
+def event_chase():
+    print("it seems left was the wrong choice\ntowering over you is a face with yellow eyes and teeth")
+    global chase_monster
+    chase_monster = True
+    chase_action = input("what are you going to do\n>")
+
+    if len(chase_action) > 10:
+        half_dash()
+        print("You were to slow to react\nBefore you knew it everything went black\n\n[Hint: Try entering a shorter message]\n")
+        while True:
+            half_dash()
+            replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
+            if replay == "1":
+                dashes()
+                event_chase()
+            elif replay == "2":
+                startup()
+            else:
+                error()
+   
+    elif "run" in chase_action or "flee" in chase_action or "bolt" in chase_action:
+        event_chase_run()
+    
+    elif "fight" in chase_action or "attack" in chase_action:
+        half_dash()
+        print("You attempt to fight the monster\nYou did well considering you were empty handed\nHowever it was all for naught\nBefore all fades to black you hear the beast release a wretched scream and thump onto the earth")
+        while True:
+            half_dash()
+            replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
+            if replay == "1":
+                dashes()
+                event_chase()
+            elif replay == "2":
+                startup()   
+            else:
+                error()
+
+    else:
+        half_dash()
+        print("In fear of the monster you couldn't think clearly and it killed you\n\n[Hint: Try entering a simple and relevant action]\n")
+        while True:
+            half_dash()
+            replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
+            if replay == "1":
+                dashes()
+                event_chase()
+            elif replay == "2":
+                startup()
+            else:
+                error()  
+def event_chase_run():
+    if var_loop_count > 15:
+        ending_death("exaustion", "maybe dont walk so much before needing to run from a monster") 
+    else:
+        dashes()
+        print("you run away from the monster\n after some running you approch an intersection")
+        runaway_path = input("Current options\n1. Run to the left\n2. Run to the right\n>")
+        if runaway_path == "1":
+            event_chill()
+        elif runaway_path == "2":
+            half_dash()
+            print("you ran to the right forgetting that that was the route you came from\nYou reach the strait path and continue to run\nThe moment you start to slow it seems the monster is immediatly behind you\nEvery thing fades to black")
+            while True:
+                half_dash()
+                replay = input("choose an option to continue\n1. Try again from return\n2. Restart story\n>")
+                if replay == "1":
+                    dashes()
+                    event_chase()
+                elif replay == "2":
+                    startup()
+                else:
+                    error()
+def event_chill():
+    dashes()
+    if chase_monster:
+        print("the danger has passed\nBehind you the monster continues running down the other path\nIts shreiks gradually fading behind you")
+        half_dash()
+    print("It is getting cold now\nA mist forms with each breath")
+    chill_action = input("\nCurrent Options:\n1. Continue onward\n2. attempt to find warmth\n>")
+    if chill_action == "1":
+        ending_forest_1()
+    elif chill_action == "2":
+        event_warmth()
+    else:
+        error()
+        event_chill()
+def event_warmth():
+    dashes()
+    print("You manage to find a blanket\nIt has gotten colder but maybe it would allow you to get some rest")
+    warmth_action = input("\nCurrent Options:\n1. Take a rest\n2. Continue onward\n>")
+    if warmth_action == "1":
+        ending_forest_2()
+    elif warmth_action == "2":
+        if chase_monster:
+            ending_forest_3()
+        else:    
+            ending_forest_2()
+    else:
+        error()
+        event_warmth()    
+
+
+# cave route code
+def status():
+    half_dash()
+    print(f"Frogs found {frog_count}/{frog_max}")
+    print(f"Health: {current_health}/{max_health}")
+    print(f"Inventory:\n{ "-Inventory empty" if inventory == [] else " -".join(inventory)}")
+    pause = input("\nEnter to return>")
+    print(" - "*17)
+def save():
+    #I just need it to work
+    global var_loop_count, chase_monster, small_unlocked, dash_count, dining_room_name, nest_room_name, lab_room_name, monster_name , max_health, current_health, inventory, current_tool, key_obtained, boulders_destroyed, door_unlocked, slide_discovered, button_pressed, boss_activated, clock_spinning, frog_count, frog_max, cool_frog, magic_frog, silly_frog, camo_frog, peculiar_frog, checked_for_frog, nest_tool_located, current_location, dinner_tool, nest_tool, monster_health, monster_defense, dodge_cooldown, dodge_active, block_cooldown, block_active
+    global s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36
+    s01 = var_loop_count
+    s02 = chase_monster
+    s03 = small_unlocked
+    s04 = dash_count
+    s05 = dining_room_name
+    s06 = nest_room_name
+    s07 = lab_room_name
+    s08 = monster_name
+    s09 = max_health
+    s10 = current_health
+    s11 = inventory
+    s12 = current_tool
+    s13 = key_obtained
+    s14 = boulders_destroyed
+    s15 = door_unlocked
+    s16 = slide_discovered
+    s17 = button_pressed
+    s18 = boss_activated
+    s19 = clock_spinning
+    s20 = frog_count
+    s21 = frog_max
+    s22 = cool_frog
+    s23 = magic_frog
+    s24 = silly_frog
+    s25 = camo_frog
+    s26 = peculiar_frog
+    s27 = checked_for_frog
+    s28 = current_location
+    s29 = dinner_tool
+    s30 = nest_tool
+    s31 = monster_health
+    s32 = monster_defense
+    s33 = dodge_cooldown
+    s34 = dodge_active
+    s35 = block_cooldown
+    s36 = block_active
+    print("- - "*13)
+    print("Game Saved       (Doesnt actually work)")
+    print("- - "*13)
+def load():
+    global var_loop_count, chase_monster, small_unlocked, dash_count, dining_room_name, nest_room_name, lab_room_name, monster_name , max_health, current_health, inventory, current_tool, key_obtained, boulders_destroyed, door_unlocked, slide_discovered, button_pressed, boss_activated, clock_spinning, frog_count, frog_max, cool_frog, magic_frog, silly_frog, camo_frog, peculiar_frog, checked_for_frog, nest_tool_located, current_location, dinner_tool, nest_tool, monster_health, monster_defense, dodge_cooldown, dodge_active, block_cooldown, block_active
+    global s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36
+    var_loop_count = s01
+    chase_monster = s02
+    small_unlocked = s03
+    dash_count = s04
+    dining_room_name = s05
+    nest_room_name = s06
+    lab_room_name = s07
+    monster_name = s08
+    max_health = s09
+    current_health = s10
+    inventory = s11
+    current_tool = s12
+    key_obtained = s13
+    boulders_destroyed = s14
+    door_unlocked = s15
+    slide_discovered = s16
+    button_pressed = s17
+    boss_activated = s18
+    clock_spinning = s19
+    frog_count = s20
+    frog_max = s21
+    cool_frog = s22
+    magic_frog = s23
+    silly_frog = s24
+    camo_frog = s25
+    peculiar_frog = s26
+    checked_for_frog = s27
+    current_location = s28
+    dinner_tool = s29
+    nest_tool = s30
+    monster_health = s31
+    monster_defense = s32
+    dodge_cooldown = s33
+    dodge_active = s34
+    block_cooldown = s35
+    block_active = s36
+    dashes()
+    print("the clock is set to 12:00")
+    room_clock()
 
 def text_cave_route_start():
     global dining_room_name, nest_room_name, lab_room_name
@@ -532,7 +493,6 @@ def text_cave_route_start():
     nest_room_name = "right room"
     lab_room_name = "mysterious room"
     room_main()
-
 def event_entrance():
     global boulders_destroyed
     dashes()
@@ -553,7 +513,119 @@ def event_entrance():
         else:
             error()
             event_entrance()
+def event_tool_found():
+    half_dash()
+    global current_location, nest_tool, dinner_tool, current_tool, inventory
+    if current_location == "nest":
+        print(f"You find the {nest_tool} in the nest")
+        if current_tool != None:
+            print("You cannot store both tools")
+            tool_choice = input(f"swap the {current_tool} for the {nest_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {nest_tool}")
+                
+                inventory.discard(current_tool)
+                temp_tool = current_tool
+                current_tool = nest_tool
+                nest_tool = temp_tool
+                inventory.add(current_tool)
 
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+            else:
+                error()
+                event_tool_found()
+        
+        if current_tool == None:
+            tool_choice = input(f"Take the {nest_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {nest_tool}")
+                
+                inventory.discard(current_tool)
+                temp_tool = current_tool
+                current_tool = nest_tool
+                nest_tool = temp_tool
+                inventory.add(current_tool)
+
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+            else:
+                error()
+                event_tool_found()
+            
+    if current_location == "dinner":
+        print(f"You find the {dinner_tool} hanging on the wall")
+        if current_tool != None:
+            print("You cannot store both tools")
+            tool_choice = input(f"swap the {current_tool} for the {dinner_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {dinner_tool}")
+                
+                inventory.discard(current_tool)
+                temp_tool = current_tool
+                current_tool = dinner_tool
+                dinner_tool = temp_tool
+                inventory.add(current_tool)
+
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+            else:
+                error()
+                event_tool_found()
+        
+        if current_tool == None:
+            tool_choice = input(f"Take the {dinner_tool}\n1. Yes\n2. No\n>")
+            if tool_choice == "1":
+                print(f"You take the {dinner_tool}")
+                
+                inventory.discard(current_tool)
+                temp_tool = current_tool
+                current_tool = dinner_tool
+                dinner_tool = temp_tool
+                inventory.add(current_tool)
+
+                pause = input("\nEnter to continue>")
+                return
+            elif tool_choice == "2":
+                return
+            else:
+                error()
+                event_tool_found()
+def event_locked_door():
+    global door_unlocked, key_obtained
+    dashes()
+    if door_unlocked == False:
+        print("Before you is a metal door\nThe door has a simple lock")
+        if "key" in inventory:
+            while True:
+                use_key = input("Use key on the door\n1. Yes\n2. No\n>")
+                if use_key == "1":
+                    dashes()
+                    room_lab()
+                elif use_key == "2":
+                    room_nest()
+                else:
+                    error()
+        else:
+            print("maybe you could find a key to open the door in one of the other rooms")
+            
+    else:
+        dashes()
+        room_lab()
+def event_slide():
+    global boss_activated
+    dashes()
+    print(f"You slide down thr slide\nA terrifing screech rings out from behind you coming from the lab\nThe slide leads to the main room\tThe screech echos from the no longer accecable slide and the {nest_room_name}\nThe clock in the clock room begins to ring loudly")
+    boss_activated = True
+    pause = input("\nEnter to continue>")
+    dashes()
+    room_main()
 def event_escape():
     global boulders_destroyed,frog_count,frog_max
     dashes()
@@ -572,7 +644,6 @@ def event_escape():
         else:
             error()
             event_escape()
-
 
 def room_main():
     global current_location
@@ -597,8 +668,6 @@ def room_main():
     else:
         error()
         room_main()
-
-
 def room_clock():
     global current_location, inventory, magic_frog, frog_count, frog_max, boss_activated,clock_spinning, key_obtained
     current_location = "clock room"
@@ -694,8 +763,6 @@ def room_clock():
 
         half_dash()
         room_clock()
-
-
 def room_dinner():
     global inventory, dining_room_name, current_tool, current_location, checked_for_frog, frog_count, frog_max, silly_frog
     current_location = "dinner"
@@ -788,7 +855,6 @@ def room_dinner():
         else:
             error()
             room_clock()
-
 def room_nest():
     global inventory, nest_room_name, current_location, nest_tool_located,frog_count, frog_max, cool_frog, boss_activated
     current_location = "nest"
@@ -832,116 +898,6 @@ def room_nest():
     elif boss_activated == True:
         print("In the nest before you stands a tall huminoid figure on 4 legs\nthe way back to the main room is blocked\nYOur onl choice is to fight")
         boss_fight()
-
-
-def event_tool_found():
-    half_dash()
-    global current_location, nest_tool, dinner_tool, current_tool, inventory
-    if current_location == "nest":
-        print(f"You find the {nest_tool} in the nest")
-        if current_tool != None:
-            print("You cannot store both tools")
-            tool_choice = input(f"swap the {current_tool} for the {nest_tool}\n1. Yes\n2. No\n>")
-            if tool_choice == "1":
-                print(f"You take the {nest_tool}")
-                
-                inventory.discard(current_tool)
-                temp_tool = current_tool
-                current_tool = nest_tool
-                nest_tool = temp_tool
-                inventory.add(current_tool)
-
-                pause = input("\nEnter to continue>")
-                return
-            elif tool_choice == "2":
-                return
-            else:
-                error()
-                event_tool_found()
-        
-        if current_tool == None:
-            tool_choice = input(f"Take the {nest_tool}\n1. Yes\n2. No\n>")
-            if tool_choice == "1":
-                print(f"You take the {nest_tool}")
-                
-                inventory.discard(current_tool)
-                temp_tool = current_tool
-                current_tool = nest_tool
-                nest_tool = temp_tool
-                inventory.add(current_tool)
-
-                pause = input("\nEnter to continue>")
-                return
-            elif tool_choice == "2":
-                return
-            else:
-                error()
-                event_tool_found()
-            
-    if current_location == "dinner":
-        print(f"You find the {dinner_tool} hanging on the wall")
-        if current_tool != None:
-            print("You cannot store both tools")
-            tool_choice = input(f"swap the {current_tool} for the {dinner_tool}\n1. Yes\n2. No\n>")
-            if tool_choice == "1":
-                print(f"You take the {dinner_tool}")
-                
-                inventory.discard(current_tool)
-                temp_tool = current_tool
-                current_tool = dinner_tool
-                dinner_tool = temp_tool
-                inventory.add(current_tool)
-
-                pause = input("\nEnter to continue>")
-                return
-            elif tool_choice == "2":
-                return
-            else:
-                error()
-                event_tool_found()
-        
-        if current_tool == None:
-            tool_choice = input(f"Take the {dinner_tool}\n1. Yes\n2. No\n>")
-            if tool_choice == "1":
-                print(f"You take the {dinner_tool}")
-                
-                inventory.discard(current_tool)
-                temp_tool = current_tool
-                current_tool = dinner_tool
-                dinner_tool = temp_tool
-                inventory.add(current_tool)
-
-                pause = input("\nEnter to continue>")
-                return
-            elif tool_choice == "2":
-                return
-            else:
-                error()
-                event_tool_found()
-
-
-def event_locked_door():
-    global door_unlocked, key_obtained
-    dashes()
-    if door_unlocked == False:
-        print("Before you is a metal door\nThe door has a simple lock")
-        if "key" in inventory:
-            while True:
-                use_key = input("Use key on the door\n1. Yes\n2. No\n>")
-                if use_key == "1":
-                    dashes()
-                    room_lab()
-                elif use_key == "2":
-                    room_nest()
-                else:
-                    error()
-        else:
-            print("maybe you could find a key to open the door in one of the other rooms")
-            
-    else:
-        dashes()
-        room_lab()
-
 def room_lab():
     global inventory, door_unlocked, current_location, lab_room_name, slide_discovered, button_pressed,monster_name, camo_frog, frog_count, frog_max
     current_location = "lab"
@@ -1055,15 +1011,262 @@ def room_lab():
             status()
             room_lab
 
-def event_slide():
-    global boss_activated
+
+#Boss fight code
+def tool_damage_calculator():
+    global current_tool
+    if current_tool == None:
+        return 10
+    elif current_tool == "pickaxe":
+        return 20
+    elif current_tool == "axe":
+        return 25  
+def boss_status():
+    global current_health, max_health, monster_health
     dashes()
-    print(f"You slide down thr slide\nA terrifing screech rings out from behind you coming from the lab\nThe slide leads to the main room\tThe screech echos from the no longer accecable slide and the {nest_room_name}\nThe clock in the clock room begins to ring loudly")
-    boss_activated = True
+    print(f"{monster_name}")
+    print(f"{monster_health}/250")
+    print(" - "*17)
+    print(f"Health: {current_health}/{max_health}")
+    print(f"Weapon: {current_tool}")
+    print(" - "*17)
+def cooldown_error(): print("Error: Cannot use skill while on cooldown"); print(" - "*17) ;player_turn()
+def player_turn():
+    global current_tool, dodge_cooldown
+    print("Actions:")
+    print( (f"1. Hit with {f'{current_tool}' if current_tool != None else 'nothing'} and prepare to dodge" if dodge_cooldown <= 0 else f"Dodge on cooldown: active for {dodge_active} turns   cooldown remaining: {dodge_cooldown} turns") )
+    print( (f"2. Hit with {f'{current_tool}' if current_tool != None else 'nothing'} and prepare to block" if block_cooldown <= 0 else f"block on cooldown: active for {block_active} turns   cooldown remaining: {block_cooldown} turns") )
+    print(f"3. Just attack with {f'{current_tool}' if current_tool != None else 'nothing'}")
+    action = input("\n>")
+    if action == "1":
+        if dodge_cooldown >0: cooldown_error(); player_turn()
+        else: attack(); dodge(); print("- - "*13)
+    elif action == "2":
+        if block_cooldown >0: cooldown_error(); player_turn()
+        else: attack(); block(); print("- - "*13)
+    elif action == "3": attack(); print("- - "*13)
+    else: error(); player_turn()
+def attack():
+    global damage, monster_health, monster_name, monster_defense
+    hit_damage = (random.randint(-5,5)+damage)//monster_defense
+    print(f"You hit {monster_name} for {hit_damage} damage")
+    monster_health -= hit_damage
+def dodge():
+    global dodge_cooldown, dodge_active
+    dodge_cooldown = 5
+    dodge_active = 3
+    print("You got ready to dodge (Increased chance to dodge enemy attacks next 3 turns)")
+    pass
+def block():
+    global block_cooldown, block_active
+    block_cooldown = 3
+    block_active = 1
+    print("You got ready to block (Take no damage next turn)")
+def monster_turn():
+    global monster_defense
+    monster_defense = 1
+    monster_action = random.randint(0,(1 if monster_health < 125 else 0))
+    if monster_action == 0:
+        monster_attack()
+    elif monster_action == 1:
+        print("The monster readies itself for an attack")
+        monster_defense = 2
+def monster_attack():
+    global current_health, dodge_active, block_active, monster_name, monster_health, damage
+    hit_damage = (10+random.randint(-5,5))
+    if block_active:
+        print(f"{monster_name} attempts to stike\nYou manage to block it")
+        if random.randint(0,1): 
+            parry_damage = (random.randint(-5,5)+damage)
+            print(f"In addition you parry dealing {parry_damage} damage")
+            monster_health -= parry_damage
+    elif random.randint(-3,dodge_active*2) >= 0:
+        print(f"{monster_name} attempts to strike\nYou managed to dodge in time")
+    else:
+        print(f"{monster_name} manages to strike you dealing {hit_damage} damage")
+        current_health -= hit_damage
+def turn_complete():
+    global dodge_active, dodge_cooldown, block_active, block_cooldown
+    if dodge_active > 0:
+        dodge_active -= 1
+    if dodge_cooldown > 0:
+        dodge_cooldown -= 1
+    if block_active > 0:
+        block_active -= 1
+    elif block_cooldown > 0:
+        block_cooldown -= 1
+def boss_fight():
+    global damage, monster_health, monster_name, current_health
+    damage = tool_damage_calculator()
+    while monster_health > 0 and current_health >0:
+        input("Enter to continue>")
+        boss_status()
+        if random.randint(1,2) == 1: print("Your turn"); player_turn()
+        else: print(f"{monster_name}'s turn"); monster_turn()
+        turn_complete()
+    if current_health <=0:
+        print("death")
+        load()
+    elif monster_health <= 0:
+        dashes()
+        print("The monster releses one last screech as it falls to the ground limp")
+        event_victory_nest()
+def event_victory_nest():
+    global frog_count, frog_max, peculiar_frog
+    print("The monster remains dead on the ground\n The path to the lab has collapsed")
+    loot = input("\nCurrent option:\n1. return to the main room\ncs. Check status")
+    if loot == "1":
+        dashes()
+        event_victory_main_room()
+    elif loot == "cs":
+        status()
+        half_dash()
+        event_victory_nest()
+    elif "loot" in loot.lower():
+        print("\nYou find something perfect within the corpse\n\nYou find a spinning frog in a peculiar hat")
+        peculiar_frog = True
+        frog_count += 1
+        print(f"Frogs found {frog_count}/{frog_max}")
+        pause = input("\nEnter to continue>")
+    else:
+        error()
+        dashes()
+        event_victory_nest()
+def event_victory_main_room():
+    global frog_count, frog_max
+    print("The path to the nest collapses behind you\nYou are in the main room\nThe tunnels to the other rooms have collapsed\nThe boulders blocking the entrace are clear\nTHe light from the entrace is blinding")
+    if frog_count == frog_max:
+        print(f"Approching the entrace suddenly {frog_max} spinning frogs appear in front of you")
+        if "yes" in input("Accept their gift\n>").lower():
+            ending_hat()
+        else:
+            dashes()
+            print("The frogs stop spinning\ndissapointment shows on their faces\nA single tear falls from the closest frog\nThe frogs disapear before you can react\n")
+            event_victory_main_room()
+    else:
+        ending_cave_3()
+
+
+#Endings
+def ending_dash():
+    print("\n"*5)
+    print("*"*51)
+    print("***************************************************\n")
+def ending_death(cause,text):
+    ending_dash()
+    print(f"You died")
+    print(f"cause of death:")
+    print(cause)
+    print(text)
+    print("***************************************************")
+    print("\n"*5)
+    dashes()
+    while True:
+        restart = input("Type 1 to restart\nType 2 to return to menu\n>")
+        if restart == "1":
+            startup()
+        if restart == "2":
+            menu()
+        if restart == "3":
+            sys.exit("see you later")
+        else:
+            half_dash()
+            print("Rather than not typing 1\nyou can type 3 to end game")
+    ending_death(death_cause, death_text)
+def ending():
     pause = input("\nEnter to continue>")
     dashes()
-    room_main()
+    print("YOU WIN (kinda)\nthanks for playing\n")
+    restart = input("Play Again?\n1. yes\n2. no\n3. return to menu\n>")
+    if restart == "1":
+        startup()
+    elif restart == "3":
+        menu()
+    else:
+        print("i'll take that as a no")
+        sys.exit("see you later")
+def ending_forest_1():
+    dashes()
+    print("You find yourself in a small town\nYour town\nOn your doorstep your parents stand there expectantly\n")
+    while True:
+        var_32147836412 = input("Go Home?\n1. Yes\n2. No\n>")
+        if var_32147836412 == "1":
+            print(" - "*17)
+            break
+        else:
+            half_dash()
+            print("Take your time\nEnter 1 when ready\n")
 
+
+    ending_dash()
+    print("                Ending obtained:                   ")
+    print("                     Home\n                        ")
+    print("            You found your way home                ")
+    print("      or.. at least you think you're home.\n        ")
+    print("***************************************************")
+    ending()
+    print("\n"*5)
+def ending_forest_2():
+    dashes()
+    print("You find yourself in a small town\nYour town\nNobody is here but you're to tired to care\nYou head strait to your bed\n")
+    while True:
+        var_32147836412 = input("Go to sleep?\n1. Yes\n2. No\n>")
+        if var_32147836412 == "1":
+            print(" - "*17)
+            break
+        else:
+            half_dash()
+            print("Take your time\nEnter 1 when ready\n")
+
+
+    ending_dash()
+    print("                Ending obtained:                   ")
+    print("                    Alone\n                        ")
+    print("         time for some well needed rest            ")
+    print("    maybe tomorrow you'll look for your family.     ")
+    print("***************************************************")
+    print("\n"*5)
+    ending()
+def ending_forest_3():
+    dashes()
+    print("You find yourself in a small town\nYour town\nthe corpes of everyone you knew lay everywhere\nno doubt the monster's fault\nYou dont think you can handle this anymore\n")
+    while True:
+        var_32147836412 = input("wake up?\n1. Yes\n2. No\n>")
+        if var_32147836412 == "1":
+            print(" - "*17)
+            break
+        else:
+            dashes()
+            print("You head strait to your bed\n")
+            while True:
+                var_32147836412 = input("Go to sleep?\n1. Yes\n2. No\n>")
+                if var_32147836412 == "1":
+                    print(" - "*17)
+                    break
+                else:
+                    half_dash()
+                    print("Take your time\nEnter 1 when ready\n")
+
+
+            ending_dash()
+            print("                Ending obtained:                   ")
+            print("                    Alone\n                        ")
+            print("         time for some well needed rest            ")
+            print("    maybe tomorrow you'll look for your family.     ")
+            print("***************************************************")
+            print("\n"*5)
+            ending()
+
+    ending_dash()
+    print("this is the end then                               ")
+    print("                  you slam you head into a rock    ")
+    print("maybe that will stop this                          ")
+    print("   maybe this nightmare will end.                 \n")
+    print("                 Dream No More                     ")
+    print("                Ending obtained\n                  ")
+    print("***************************************************")
+    print("\n"*5)
+    ending()
 def ending_cave_1():
     dashes()
     print("You follow the path\nYou have no idea how long it has been but the sun is rising\n you see a town on the horizon\n")
@@ -1084,7 +1287,6 @@ def ending_cave_1():
     print("***************************************************")
     ending()
     print("\n"*5)
-
 def ending_cave_2():
     dashes()
     print("You left the path\nYou dont know how long ago that was\nYou hope you find civilization soon\n")
@@ -1106,122 +1308,50 @@ def ending_cave_2():
     print("***************************************************")
     ending()
     print("\n"*5)
-
-
-#boss code
-def tool_damage_calculator():
-    global current_tool
-    if current_tool == None:
-        return 10
-    elif current_tool == "pickaxe":
-        return 15
-    elif current_tool == "axe":
-        return 25
-    
-def boss_status():
-    global current_health, max_health, monster_health
+def ending_cave_3():
     dashes()
-    print(f"{monster_name}")
-    print(f"{monster_health}/250")
-    print(" - "*17)
-    print(f"Health: {current_health}/{max_health}")
-    print(f"Weapon: {current_tool}")
-    print(" - "*17)
+    print("The light outside the cave is too brght for you to see\n")
+    while True:
+        var_32147836412 = input("Leave the cave\n1. Yes\n2. No\n>")
+        if var_32147836412 == "1":
+            print(" - "*17)
+            break
+        else:
+            half_dash()
+            print("It truly is your only option\n")
 
-def cooldown_error(): print("Error: Cannot use skill while on cooldown"); print(" - "*17) ;player_turn()
+    ending_dash()
+    print("                Ending obtained:                   ")
+    print("                    Monster\n                      ")
+    print("   the scourge of the cave has been defeated       ")
+    print("      Maybe you can find your way home now\n       ")
+    print("***************************************************")
+    ending()
+    print("\n"*5)
+def ending_hat():
+    dashes()
+    print("From the sky floats down a hat\nIt is perfect\nSo perfect you jolt upright\n\nand hit your head on the upper bunk of your bed")
+    pause = input("\nEnter to continue>")
+    ending_dash()
+    print("                Ending obtained:                   ")
+    print("                The True Ending\n                  ")
+    print("        You woke up the nightmare cave             ")
+    print("             but What did it cost\n                ")
+    print("***************************************************")
+    ending()
+    print("\n"*5)
+def ending_secret():
+    dashes()
+    print("You hear a ringing all around\nYou wake up\nYour alarm is going off\n")
+    pause = input("\nEnter to continue>")
+    ending_dash()
+    print("                Ending obtained:                   ")
+    print("               The Secret Ending\n                 ")
+    print("   You wasted so much time your alarm went off     ")
+    print("If I had to guess I would say you are owen Rossing\n")
+    print("***************************************************")
+    ending()
+    print("\n"*5)
 
-def player_turn():
-    global current_tool, dodge_cooldown
-    print("Actions:")
-    print( (f"1. Hit with {f'{current_tool}' if current_tool != None else 'nothing'} and prepare to dodge" if dodge_cooldown <= 0 else f"Dodge on cooldown: active for {dodge_active} turns   cooldown remaining: {dodge_cooldown} turns") )
-    print( (f"2. Hit with {f'{current_tool}' if current_tool != None else 'nothing'} and prepare to block" if block_cooldown <= 0 else f"block on cooldown: active for {block_active} turns   cooldown remaining: {block_cooldown} turns") )
-    print(f"3. Just attack with {f'{current_tool}' if current_tool != None else 'nothing'}")
-    action = input("\n>")
-    if action == "1":
-        if dodge_cooldown >0: cooldown_error(); player_turn()
-        else: attack(); dodge(); print("- - "*13)
-    elif action == "2":
-        if block_cooldown >0: cooldown_error(); player_turn()
-        else: attack(); block(); print("- - "*13)
-    elif action == "3": attack(); print("- - "*13)
-    else: error(); player_turn()
-
-def attack():
-    global damage, monster_health, monster_name, monster_defense
-    hit_damage = (random.randint(-5,5)+damage)//monster_defense
-    print(f"You hit {monster_name} for {hit_damage} damage")
-    monster_health -= hit_damage
-
-def dodge():
-    global dodge_cooldown, dodge_active
-    dodge_cooldown = 5
-    dodge_active = 3
-    print("You got ready to dodge (Increased chance to dodge enemy attacks next 3 turns)")
-    pass
-
-def block():
-    global block_cooldown, block_active
-    block_cooldown = 3
-    block_active = 1
-    print("You got ready to block (Take no damage next turn)")
-
-
-def monster_turn():
-    global monster_defense
-    monster_defense = 1
-    monster_action = random.randint(0,(1 if monster_health < 125 else 0))
-    if monster_action == 0:
-        monster_attack()
-    elif monster_action == 1:
-        print("The monster readies itself for an attack")
-        monster_defense = 2
-
-def monster_attack():
-    global current_health, dodge_active, block_active, monster_name, monster_health, damage
-    hit_damage = (10+random.randint(-5,5))
-    if block_active:
-        print(f"{monster_name} attempts to stike\nYou manage to block it")
-        if random.randint(0,1): 
-            parry_damage = (random.randint(-5,5)+damage)
-            print(f"In addition you parry dealing {parry_damage} damage")
-            monster_health -= parry_damage
-    elif random.randint(-3,dodge_active*2) >= 0:
-        print(f"{monster_name} attempts to strike\nYou managed to dodge in time")
-    else:
-        print(f"{monster_name} manages to strike you dealing {hit_damage} damage")
-        current_health -= hit_damage
-
-
-
-
-def turn_complete():
-    global dodge_active, dodge_cooldown, block_active, block_cooldown
-    if dodge_active > 0:
-        dodge_active -= 1
-    if dodge_cooldown > 0:
-        dodge_cooldown -= 1
-    if block_active > 0:
-        block_active -= 1
-    elif block_cooldown > 0:
-        block_cooldown -= 1
-
-def boss_fight():
-    global damage, monster_health, monster_name, current_health
-    damage = tool_damage_calculator()
-    while monster_health > 0 and current_health >0:
-        input("Enter to continue>")
-        boss_status()
-        if random.randint(1,2) == 1: print("Your turn"); player_turn()
-        else: print(f"{monster_name}'s turn"); monster_turn()
-        turn_complete()
-    if current_health <=0:
-        print("death")
-        load()
-    elif monster_health <= 0:
-        print("victory")
-        event_victory_nest()
-
-def event_victory_nest():
-    pass
-    
-event_cave()
+#Start the game
+menu()
