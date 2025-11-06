@@ -1,12 +1,12 @@
 fruit = ["orange","peach","mango","kiki","watermelon", "apple", "apple"]
 print(fruit[0], fruit[-1])
 fruit.append(input("choose a fruit to add\n>").lower())
-fruit.remove(input(("choose a fruit to remove\n>").lower()))
+try: fruit.remove(input(("choose a fruit to remove\n>").lower()))
+except: pass
 fruit.sort()
 print(fruit)
 print(fruit.count("apple"))
-for item in fruit:
-    print(item)
+for x in fruit: print(x)
 
 
 
