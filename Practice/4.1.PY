@@ -5,18 +5,8 @@ fruit.remove(input(("choose a fruit to remove\n>").lower()))
 fruit.sort()
 print(fruit)
 print(fruit.count("apple"))
-
-
-
-
-
-
-
-
-
-
-
-
+for item in fruit:
+    print(item)
 
 
 
