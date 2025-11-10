@@ -1,5 +1,5 @@
 import random
-number = random.randint(1,10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)
+number = random.randint(1,100)
 history  = []
 while number not in history:
     while True:
