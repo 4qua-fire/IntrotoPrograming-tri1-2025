@@ -29,7 +29,7 @@ for i in range(51):
     print(total)
 '''
 superlist = []
-for i in range(51):
+for i in range(11):
     new_list = []
     for i in range(51):
         number =[]
