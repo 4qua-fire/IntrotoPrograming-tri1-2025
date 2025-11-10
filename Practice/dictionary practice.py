@@ -1,10 +1,27 @@
-current_hp = 100
-max_hp = 100
-player = {
-    "HP": f"{current_hp}/{max_hp}"
-    
+things = {
+    "colors":["blue", "green", "red"],
+    "something": "something",
+    "nothing": []
 
 
 
 }
-print(player["HP"])
+
+
+print(things["colors"])
+
+#add entry
+things["foods"] = ["pizza", "potatos", "banana"]
+
+#modify entry
+things["colors"].append("purple")
+
+#remove entry
+del things["nothing"]
+things.pop("something")
+
+
+#.keys 
+#.values
+#.items
+#.clear
