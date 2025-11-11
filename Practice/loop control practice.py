@@ -34,7 +34,7 @@ for i in range(11):
     for i in range(51):
         number =[]
         for i in range(100001):
-            list = [random.randint(-10,10) for i in range(11)]
+            list = [random.randint(-10,10) for i in range(10)]
             total = 0
             for x in list:
                 if x < 0:
